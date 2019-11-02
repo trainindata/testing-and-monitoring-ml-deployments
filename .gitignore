@@ -102,3 +102,17 @@ venv.bak/
 
 # mypy
 .mypy_cache/
+
+# pycharm
+.idea/
+
+.DS_Store
+
+# training data
+packages/gradient_boosting_model/gradient_boosting_model/datasets/*.csv
+packages/gradient_boosting_model/gradient_boosting_model/datasets/*.txt
+packages/gradient_boosting_model/gradient_boosting_model/datasets/*.zip
+houseprice.csv
+train.csv
+test.csv
+!/packages/gradient_boosting_model/gradient_boosting_model/datasets/.gitkeep
