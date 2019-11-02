@@ -1,0 +1,63 @@
+# Package Overview
+package_name: gradient_boosting_model
+
+# Data Files
+training_data_file: houseprice.csv
+
+# this variable is to calculate the temporal variable
+drop_features: YrSold
+
+pipeline_name: gb_regression
+pipeline_save_file: gb_regression_output_v
+
+# Variables
+target: SalePrice
+
+features:
+  - LotArea
+  - OverallQual
+  - YearRemodAdd
+  - BsmtQual
+  - BsmtFinSF1
+  - TotalBsmtSF
+  - 1stFlrSF
+  - 2ndFlrSF
+  - GrLivArea
+  - GarageCars
+    # this one is only to calculate temporal variable:
+  - YrSold
+
+numerical_vars:
+  - LotArea
+  - OverallQual
+  - YearRemodAdd
+  - BsmtQual
+  - BsmtFinSF1
+  - TotalBsmtSF
+  - 1stFlrSF
+  - 2ndFlrSF
+  - GrLivArea
+  - GarageCars
+
+categorical_vars:
+  - BsmtQual
+
+temporal_vars:
+  - YearRemodAdd
+
+# Validation
+# numerical variables with NA in train set
+numerical_vars_with_na:
+  - LotFrontage
+
+numerical_na_not_allowed:
+  - LotArea
+  - OverallQual
+  - YearRemodAdd
+  - BsmtFinSF1
+  - TotalBsmtSF
+  - 1stFlrSF
+  - 2ndFlrSF
+  - GrLivArea
+  - GarageCars
+  - YrSold
