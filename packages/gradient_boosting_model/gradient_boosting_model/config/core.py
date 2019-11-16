@@ -103,7 +103,7 @@ def create_and_validate_config(config_dict: YAML = None) -> Config:
     if config_dict is None:
         config_dict = fetch_config_from_yaml()
 
-    # specify the data attribute created by the strictyaml parser
+    # specify the data attribute from the strictyaml YAML type.
     _config = Config(
         app_config=AppConfig(**config_dict.data),
         model_config=ModelConfig(**config_dict.data),
