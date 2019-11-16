@@ -3,7 +3,11 @@ from sklearn.base import BaseEstimator, TransformerMixin
 
 
 class SklearnTransformerWrapper(BaseEstimator, TransformerMixin):
-    """Categorical data missing value imputer."""
+    """
+    Wrapper for Scikit-learn pre-processing transformers,
+    like the SimpleImputer() or OrdinalEncoder(), to allow
+    the use of the transformer on a selected group of variables.
+    """
 
     def __init__(self, variables=None, transformer=None):
 
@@ -15,7 +19,11 @@ class SklearnTransformerWrapper(BaseEstimator, TransformerMixin):
         self.transformer = transformer
 
     def fit(self, X: pd.DataFrame, y: pd.Series = None):
-        """Fit statement to accomodate the sklearn pipeline."""
+        """
+        The `fit` method allows scikit-learn transformers to
+        learn the required parameters from the training data set.
+        """
+
         self.transformer.fit(X[self.variables])
         return self
 
@@ -27,7 +35,7 @@ class SklearnTransformerWrapper(BaseEstimator, TransformerMixin):
 
 
 class TemporalVariableEstimator(BaseEstimator, TransformerMixin):
-    """Temporal variable calculator."""
+    """Calculates the time difference between 2 temporal variables."""
 
     def __init__(self, variables=None, reference_variable=None):
         if not isinstance(variables, list):
@@ -38,7 +46,11 @@ class TemporalVariableEstimator(BaseEstimator, TransformerMixin):
         self.reference_variables = reference_variable
 
     def fit(self, X, y=None):
-        # we need this step to fit the sklearn pipeline
+        """
+        The `fit` method is necessary to accommodate the
+        scikit-learn pipeline functionality.
+        """
+
         return self
 
     def transform(self, X):
@@ -54,10 +66,15 @@ class DropUnecessaryFeatures(BaseEstimator, TransformerMixin):
         self.variables = variables_to_drop
 
     def fit(self, X, y=None):
+        """
+        The `fit` method is necessary to accommodate the
+        scikit-learn pipeline functionality.
+        """
+
         return self
 
     def transform(self, X):
-        # encode labels
+        # drop unnecesary / unused features from the data set
         X = X.copy()
         X = X.drop(self.variables, axis=1)
 

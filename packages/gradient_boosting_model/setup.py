@@ -10,7 +10,7 @@ from gradient_boosting_model import config, PACKAGE_ROOT
 
 # Package meta-data.
 NAME = config['package_name'].data
-DESCRIPTION = "Train and deploy LARS Lasso regression model."
+DESCRIPTION = "Train and deploy gradient boosting regression model."
 URL = "your github project"
 EMAIL = "your_email@email.com"
 AUTHOR = "Your name"
