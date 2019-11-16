@@ -1,11 +1,12 @@
 import pathlib
 import typing as t
 
-import gradient_boosting_model
-from strictyaml import load, Map, Str, Seq, Int, Float
 from pydantic import BaseModel, validator
+from strictyaml import load, YAML
 
-# Key Directories
+import gradient_boosting_model
+
+# Project Directories
 ROOT = pathlib.Path(gradient_boosting_model.__file__).resolve().parent.parent
 PACKAGE_ROOT = pathlib.Path(gradient_boosting_model.__file__).resolve().parent
 CONFIG_FILE_PATH = ROOT / "config.yml"
@@ -13,33 +14,11 @@ TRAINED_MODEL_DIR = PACKAGE_ROOT / "trained_models"
 DATASET_DIR = PACKAGE_ROOT / "datasets"
 
 
-CONFIG_SCHEMA = Map(
-    {"package_name": Str(),
-     "training_data_file": Str(),
-     "drop_features": Seq(Str()),
-     "pipeline_name": Str(),
-     "pipeline_save_file": Str(),
-     "target": Str(),
-     "features": Seq(Str()),
-     "numerical_vars": Seq(Str()),
-     "categorical_vars": Seq(Str()),
-     "temporal_vars": Seq(Str()),
-     "numerical_vars_with_na": Seq(Str()),
-     'numerical_na_not_allowed': Seq(Str()),
-     'random_state': Int(),
-     'n_estimators': Int(),
-     'rare_label_n_categories': Int(),
-     'rare_label_tol': Float(),
-     'allowed_loss_functions': Seq(Str()),
-     'loss': Str(),
-     }
-)
-
-
 class AppConfig(BaseModel):
     """
     Application-level config.
     """
+
     package_name: str
     pipeline_name: str
     pipeline_save_file: str
@@ -52,12 +31,12 @@ class ModelConfig(BaseModel):
     training and feature engineering.
     """
 
-    drop_features: t.Sequence[str]
+    drop_features: str
     target: str
     features: t.Sequence[str]
     numerical_vars: t.Sequence[str]
     categorical_vars: t.Sequence[str]
-    temporal_vars: t.Sequence[str]
+    temporal_vars: str
     numerical_vars_with_na: t.Sequence[str]
     numerical_na_not_allowed: t.Sequence[str]
     random_state: int
@@ -69,7 +48,7 @@ class ModelConfig(BaseModel):
     allowed_loss_functions: t.Tuple[str, ...]
     loss: str
 
-    @validator('loss')
+    @validator("loss")
     def allowed_loss_function(cls, value, values):
         """
         Loss function to be optimized.
@@ -87,45 +66,48 @@ class ModelConfig(BaseModel):
         if value in allowed_loss_functions:
             return value
         raise ValueError(
-            f'the loss parameter specified: {value}, '
-            f'is not in the allowed set: {allowed_loss_functions}')
+            f"the loss parameter specified: {value}, "
+            f"is not in the allowed set: {allowed_loss_functions}"
+        )
 
 
 class Config(BaseModel):
     """Master config object."""
+
     app_config: AppConfig
     model_config: ModelConfig
 
 
-def find_config_file():
+def find_config_file() -> pathlib.Path:
     """Locate the configuration file."""
     if CONFIG_FILE_PATH.is_file():
         return CONFIG_FILE_PATH
-    raise Exception(f'Config not found at {CONFIG_FILE_PATH!r}')
+    raise Exception(f"Config not found at {CONFIG_FILE_PATH!r}")
 
 
-def fetch_config_from_yaml(cfg_path: pathlib.Path = None):
+def fetch_config_from_yaml(cfg_path: pathlib.Path = None) -> YAML:
     """Parse YAML containing the package configuration."""
 
     if not cfg_path:
         cfg_path = find_config_file()
 
     if cfg_path:
-        with open(cfg_path, 'r') as conf_file:
-            cfg_dict = load(
-                conf_file.read(), CONFIG_SCHEMA)
+        with open(cfg_path, "r") as conf_file:
+            cfg_dict = load(conf_file.read())
             return cfg_dict
-    return False
+    raise OSError(f'Did not find config file at path: {cfg_path}')
 
 
-def create_and_validate_config(config_dict: dict = None) -> Config:
+def create_and_validate_config(config_dict: YAML = None) -> Config:
     """Run validation on config values."""
     if config_dict is None:
         config_dict = fetch_config_from_yaml()
 
     # specify the data attribute created by the strictyaml parser
-    _config = Config(app_config=AppConfig(**config_dict.data),
-                    model_config=ModelConfig(**config_dict.data))
+    _config = Config(
+        app_config=AppConfig(**config_dict.data),
+        model_config=ModelConfig(**config_dict.data),
+    )
 
     return _config
 

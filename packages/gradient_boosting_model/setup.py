@@ -5,11 +5,11 @@ import io
 import os
 
 from setuptools import find_packages, setup
-from gradient_boosting_model import config, PACKAGE_ROOT
+from gradient_boosting_model.config.core import config, PACKAGE_ROOT
 
 
 # Package meta-data.
-NAME = config['package_name'].data
+NAME = config.app_config.package_name
 DESCRIPTION = "Train and deploy gradient boosting regression model."
 URL = "your github project"
 EMAIL = "your_email@email.com"

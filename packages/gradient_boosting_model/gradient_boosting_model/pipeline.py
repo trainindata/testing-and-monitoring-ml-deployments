@@ -23,7 +23,7 @@ price_pipe = Pipeline(
             ),
         ),
         (
-            "categorical_imputer",
+            "categorical_inputer",
             pp.SklearnTransformerWrapper(
                 variables=config.model_config.categorical_vars,
                 transformer=SimpleImputer(strategy="constant", fill_value="missing"),
@@ -33,7 +33,7 @@ price_pipe = Pipeline(
             "temporal_variable",
             pp.TemporalVariableEstimator(
                 variables=config.model_config.temporal_vars,
-                reference_variable=config.model_config.drop_features
+                reference_variable=config.model_config.drop_features,
             ),
         ),
         (
@@ -41,14 +41,14 @@ price_pipe = Pipeline(
             RareLabelCategoricalEncoder(
                 tol=config.model_config.rare_label_tol,
                 n_categories=config.model_config.rare_label_n_categories,
-                variables=config.model_config.categorical_vars
+                variables=config.model_config.categorical_vars,
             ),
         ),
         (
             "categorical_encoder",
             pp.SklearnTransformerWrapper(
                 variables=config.model_config.categorical_vars,
-                transformer=OrdinalEncoder()
+                transformer=OrdinalEncoder(),
             ),
         ),
         (
@@ -57,9 +57,13 @@ price_pipe = Pipeline(
                 variables_to_drop=config.model_config.drop_features,
             ),
         ),
-        ("gb_model", GradientBoostingRegressor(
-            loss=config.model_config.loss,
-            random_state=config.model_config.random_state,
-            n_estimators=config.model_config.n_estimators)),
+        (
+            "gb_model",
+            GradientBoostingRegressor(
+                loss=config.model_config.loss,
+                random_state=config.model_config.random_state,
+                n_estimators=config.model_config.n_estimators,
+            ),
+        ),
     ]
 )

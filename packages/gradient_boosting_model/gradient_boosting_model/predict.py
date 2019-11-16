@@ -20,7 +20,7 @@ def make_prediction(*, input_data: t.Union[pd.DataFrame, dict],) -> dict:
     data = pd.DataFrame(input_data)
     validated_data = validate_inputs(input_data=data)
 
-    prediction = _price_pipe.predict(X=validated_data[config['features'].data])
+    prediction = _price_pipe.predict(X=validated_data[config.model_config.features])
     output = prediction
 
     results = {"predictions": output, "version": _version}

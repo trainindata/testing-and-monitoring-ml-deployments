@@ -5,8 +5,7 @@ package_name: gradient_boosting_model
 training_data_file: houseprice.csv
 
 # this variable is to calculate the temporal variable
-drop_features:
-  - YrSold
+drop_features: YrSold
 
 pipeline_name: gb_regression
 pipeline_save_file: gb_regression_output_v
@@ -43,8 +42,7 @@ numerical_vars:
 categorical_vars:
   - BsmtQual
 
-temporal_vars:
-  - YearRemodAdd
+temporal_vars: YearRemodAdd
 
 # Validation
 # numerical variables with NA in train set
