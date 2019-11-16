@@ -22,10 +22,12 @@ def run_training() -> None:
 
     # divide train and test
     X_train, X_test, y_train, y_test = train_test_split(
-        data[config.model_config.features],
+        data[config.model_config.features],  # predictors
         data[config.model_config.target],
         test_size=0.1,
-        random_state=0,  # we are setting the seed here
+        # we are setting the random seed here
+        # for reproducibility
+        random_state=0,
     )
 
     pipeline.price_pipe.fit(X_train, y_train)

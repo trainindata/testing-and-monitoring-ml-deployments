@@ -9,9 +9,9 @@ def validate_inputs(input_data: pd.DataFrame) -> pd.DataFrame:
     validated_data = input_data.copy()
 
     # check for numerical variables with NA not seen during training
-    if input_data[config['numerical_na_not_allowed'].data].isnull().any().any():
+    if input_data[config.model_config.numerical_na_not_allowed].isnull().any().any():
         validated_data = validated_data.dropna(
-            axis=0, subset=config['numerical_na_not_allowed'].data
+            axis=0, subset=config.model_config.numerical_na_not_allowed
         )
 
     return validated_data

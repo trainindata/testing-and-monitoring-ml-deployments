@@ -23,7 +23,7 @@ price_pipe = Pipeline(
             ),
         ),
         (
-            "categorical_inputer",
+            "categorical_imputer",
             pp.SklearnTransformerWrapper(
                 variables=config.model_config.categorical_vars,
                 transformer=SimpleImputer(strategy="constant", fill_value="missing"),
