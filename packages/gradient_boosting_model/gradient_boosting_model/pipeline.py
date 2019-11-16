@@ -18,44 +18,48 @@ price_pipe = Pipeline(
         (
             "numerical_imputer",
             pp.SklearnTransformerWrapper(
-                variables=config['numerical_vars'].data,
+                variables=config.model_config.numerical_vars,
                 transformer=SimpleImputer(strategy="most_frequent"),
             ),
         ),
         (
             "categorical_inputer",
             pp.SklearnTransformerWrapper(
-                variables=config['categorical_vars'].data,
+                variables=config.model_config.categorical_vars,
                 transformer=SimpleImputer(strategy="constant", fill_value="missing"),
             ),
         ),
         (
             "temporal_variable",
             pp.TemporalVariableEstimator(
-                variables=config['temporal_vars'].data,
-                reference_variable=config['drop_features'].data
+                variables=config.model_config.temporal_vars,
+                reference_variable=config.model_config.drop_features
             ),
         ),
         (
             "rare_label_encoder",
             RareLabelCategoricalEncoder(
-                tol=0.01,
-                n_categories=5,
-                variables=config['categorical_vars'].data
+                tol=config.model_config.rare_label_tol,
+                n_categories=config.model_config.rare_label_n_categories,
+                variables=config.model_config.categorical_vars
             ),
         ),
         (
             "categorical_encoder",
             pp.SklearnTransformerWrapper(
-                variables=config['categorical_vars'].data,
+                variables=config.model_config.categorical_vars,
                 transformer=OrdinalEncoder()
             ),
         ),
         (
             "drop_features",
             pp.DropUnecessaryFeatures(
-                variables_to_drop=config['drop_features'].data),
+                variables_to_drop=config.model_config.drop_features,
+            ),
         ),
-        ("gb_model", GradientBoostingRegressor(random_state=0, n_estimators=50)),
+        ("gb_model", GradientBoostingRegressor(
+            loss=config.model_config.loss,
+            random_state=config.model_config.random_state,
+            n_estimators=config.model_config.n_estimators)),
     ]
 )

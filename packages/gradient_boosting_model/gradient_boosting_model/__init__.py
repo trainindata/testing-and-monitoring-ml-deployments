@@ -11,7 +11,7 @@ from gradient_boosting_model.config.core import config, PACKAGE_ROOT
 # ‘under the hood’, you might well interfere with their ability to carry out
 # unit tests and deliver logs which suit their requirements.
 # https://docs.python.org/3/howto/logging.html#configuring-logging-for-a-library
-logging.getLogger(config['package_name'].data).addHandler(logging.NullHandler())
+logging.getLogger(config.app_config.package_name).addHandler(logging.NullHandler())
 
 
 with open(os.path.join(PACKAGE_ROOT, "VERSION")) as version_file:

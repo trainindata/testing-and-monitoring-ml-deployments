@@ -5,7 +5,8 @@ package_name: gradient_boosting_model
 training_data_file: houseprice.csv
 
 # this variable is to calculate the temporal variable
-drop_features: YrSold
+drop_features:
+  - YrSold
 
 pipeline_name: gb_regression
 pipeline_save_file: gb_regression_output_v
@@ -61,3 +62,23 @@ numerical_na_not_allowed:
   - GrLivArea
   - GarageCars
   - YrSold
+
+# to set the random seed
+random_state: 0
+
+# The number of boosting stages to perform
+n_estimators: 50
+
+# the minimum frequency a label should have to be considered frequent
+# and not be removed.
+rare_label_tol: 0.01
+
+# the minimum number of categories a variable should have in order for
+# the encoder to find frequent labels
+rare_label_n_categories: 5
+
+# loss function to be optimized
+loss: ls
+allowed_loss_functions:
+  - ls
+  - huber

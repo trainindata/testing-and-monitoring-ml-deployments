@@ -18,12 +18,12 @@ def run_training() -> None:
     """Train the model."""
 
     # read training data
-    data = load_dataset(file_name=config['training_data_file'])
+    data = load_dataset(file_name=config.app_config.training_data_file)
 
     # divide train and test
     X_train, X_test, y_train, y_test = train_test_split(
-        data[config['features'].data],
-        data[config['target'].data],
+        data[config.model_config.features],
+        data[config.model_config.target],
         test_size=0.1,
         random_state=0,  # we are setting the seed here
     )

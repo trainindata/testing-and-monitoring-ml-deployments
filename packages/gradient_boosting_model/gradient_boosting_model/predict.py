@@ -10,7 +10,7 @@ from gradient_boosting_model.processing.validation import validate_inputs
 
 _logger = logging.getLogger(__name__)
 
-pipeline_file_name = f"{config['pipeline_save_file']}{_version}.pkl"
+pipeline_file_name = f"{config.app_config.pipeline_save_file}{_version}.pkl"
 _price_pipe = load_pipeline(file_name=pipeline_file_name)
 
 
