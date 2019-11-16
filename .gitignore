@@ -105,3 +105,16 @@ venv.bak/
 
 # pycharm
 .idea/
+
+# OSX
+.DS_Store
+
+# all logs
+logs/
+
+# training data
+packages/gradient_boosting_model/gradient_boosting_model/datasets/houseprice.csv
+
+# trained models
+packages/gradient_boosting_model/gradient_boosting_model/trained_models/*.pkl
+*.h5
