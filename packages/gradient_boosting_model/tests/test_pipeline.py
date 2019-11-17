@@ -32,6 +32,6 @@ def test_pipeline_transforms_temporal_features(pipeline_inputs):
 
     # Then
     assert (
-            X_transformed.iloc[0]["YearRemodAdd"]
-            == X_train.iloc[0]["YrSold"] - X_train.iloc[0]["YearRemodAdd"]
+        X_transformed.iloc[0]["YearRemodAdd"]
+        == X_train.iloc[0]["YrSold"] - X_train.iloc[0]["YearRemodAdd"]
     )
