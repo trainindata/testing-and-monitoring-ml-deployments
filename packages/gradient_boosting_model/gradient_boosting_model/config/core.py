@@ -95,7 +95,7 @@ def fetch_config_from_yaml(cfg_path: pathlib.Path = None) -> YAML:
         with open(cfg_path, "r") as conf_file:
             cfg_dict = load(conf_file.read())
             return cfg_dict
-    raise OSError(f'Did not find config file at path: {cfg_path}')
+    raise OSError(f"Did not find config file at path: {cfg_path}")
 
 
 def create_and_validate_config(config_dict: YAML = None) -> Config:

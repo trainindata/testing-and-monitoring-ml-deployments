@@ -1,5 +1,3 @@
-import math
-
 from gradient_boosting_model.predict import make_prediction
 from gradient_boosting_model.processing.data_management import load_dataset
 from gradient_boosting_model.config.core import config
