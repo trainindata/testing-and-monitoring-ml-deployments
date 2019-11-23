@@ -39,6 +39,7 @@ class ModelConfig(BaseModel):
     temporal_vars: str
     numerical_vars_with_na: t.Sequence[str]
     numerical_na_not_allowed: t.Sequence[str]
+    test_size: float
     random_state: int
     n_estimators: int
     rare_label_n_categories: int

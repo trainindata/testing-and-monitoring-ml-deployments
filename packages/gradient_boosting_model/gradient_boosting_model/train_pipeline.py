@@ -24,10 +24,10 @@ def run_training() -> None:
     X_train, X_test, y_train, y_test = train_test_split(
         data[config.model_config.features],  # predictors
         data[config.model_config.target],
-        test_size=0.1,
+        test_size=config.model_config.test_size,
         # we are setting the random seed here
         # for reproducibility
-        random_state=0,
+        random_state=config.model_config.random_state,
     )
 
     pipeline.price_pipe.fit(X_train, y_train)
