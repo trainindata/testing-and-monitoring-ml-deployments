@@ -5,12 +5,15 @@ package_name: gradient_boosting_model
 training_data_file: houseprice.csv
 
 # this variable is to calculate the temporal variable
+# but is dropped prior to model training.
 drop_features: YrSold
 
 pipeline_name: gb_regression
 pipeline_save_file: gb_regression_output_v
 
 # Variables
+
+# The variable we are attempting to predict (sale price)
 target: SalePrice
 
 features:
@@ -60,6 +63,9 @@ numerical_na_not_allowed:
   - GrLivArea
   - GarageCars
   - YrSold
+
+# set train/test split
+test_size: 0.1
 
 # to set the random seed
 random_state: 0
