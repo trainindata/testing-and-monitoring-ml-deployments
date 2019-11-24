@@ -1,0 +1,13 @@
+-r requirements.txt
+
+# testing requirements
+pytest>=5.3.2,<6.0.0
+
+# old model for testing purposes
+# source code: https://github.com/trainindata/deploying-machine-learning-models/tree/master/packages/regression_model
+tid-regression-model>=2.0.20,<2.1.0
+
+# repo maintenance tooling
+black>=19.10b0,<20.0
+flake8>=3.7.9,<4.0
+mypy>=0.740
