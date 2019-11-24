@@ -16,6 +16,9 @@ drop_features: YrSold
 pipeline_name: gb_regression
 pipeline_save_file: gb_regression_output_v
 target: SalePrice
+variables_to_rename: 
+    foo: bar
+test_size: 0.1
 features:
   - LotArea
 numerical_vars:
@@ -86,6 +89,10 @@ def test_config_validation_raises_error_for_invalid_config(tmpdir):
     # We make use of the pytest built-in tmpdir fixture
     configs_dir = Path(tmpdir)
     config_1 = configs_dir / "sample_config.yml"
+
+    # invalid config attempts to set a prohibited loss
+    # function which we validate against an allowed set of
+    # loss function parameters.
     config_1.write_text(INVALID_TEST_CONFIG_TEXT)
     config_dict = fetch_config_from_yaml(cfg_path=config_1)
 
