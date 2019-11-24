@@ -1,5 +1,4 @@
 from gradient_boosting_model.processing.validation import validate_inputs
-from gradient_boosting_model.processing.data_management import load_dataset
 
 
 def test_validate_inputs(sample_input_data):
