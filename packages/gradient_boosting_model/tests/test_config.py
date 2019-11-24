@@ -17,7 +17,7 @@ drop_features: YrSold
 pipeline_name: gb_regression
 pipeline_save_file: gb_regression_output_v
 target: SalePrice
-variables_to_rename: 
+variables_to_rename:
     foo: bar
 test_size: 0.1
 features:
