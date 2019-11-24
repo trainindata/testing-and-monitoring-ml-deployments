@@ -14,7 +14,10 @@ _logger = logging.getLogger(__name__)
 
 def load_dataset(*, file_name: str) -> pd.DataFrame:
     dataframe = pd.read_csv(f"{DATASET_DIR}/{file_name}")
-    return dataframe
+
+    # rename variables beginning with numbers to avoid syntax errors later
+    transformed = dataframe.rename(columns=config.model_config.variables_to_rename)
+    return transformed
 
 
 def save_pipeline(*, pipeline_to_persist) -> None:

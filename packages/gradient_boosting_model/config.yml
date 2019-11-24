@@ -12,9 +12,14 @@ pipeline_name: gb_regression
 pipeline_save_file: gb_regression_output_v
 
 # Variables
-
 # The variable we are attempting to predict (sale price)
 target: SalePrice
+
+# Will cause syntax errors since they begin with numbers
+variables_to_rename:
+  1stFlrSF: FirstFlrSF
+  2ndFlrSF: SecondFlrSF
+  3SsnPorch: ThreeSsnPortch
 
 features:
   - LotArea
@@ -23,8 +28,8 @@ features:
   - BsmtQual
   - BsmtFinSF1
   - TotalBsmtSF
-  - 1stFlrSF
-  - 2ndFlrSF
+  - FirstFlrSF
+  - SecondFlrSF
   - GrLivArea
   - GarageCars
     # this one is only to calculate temporal variable:
@@ -37,8 +42,8 @@ numerical_vars:
   - BsmtQual
   - BsmtFinSF1
   - TotalBsmtSF
-  - 1stFlrSF
-  - 2ndFlrSF
+  - FirstFlrSF
+  - SecondFlrSF
   - GrLivArea
   - GarageCars
 
@@ -58,8 +63,8 @@ numerical_na_not_allowed:
   - YearRemodAdd
   - BsmtFinSF1
   - TotalBsmtSF
-  - 1stFlrSF
-  - 2ndFlrSF
+  - FirstFlrSF
+  - SecondFlrSF
   - GrLivArea
   - GarageCars
   - YrSold

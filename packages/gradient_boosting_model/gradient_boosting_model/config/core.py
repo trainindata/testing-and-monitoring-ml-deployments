@@ -33,6 +33,7 @@ class ModelConfig(BaseModel):
 
     drop_features: str
     target: str
+    variables_to_rename: t.Dict
     features: t.Sequence[str]
     numerical_vars: t.Sequence[str]
     categorical_vars: t.Sequence[str]
