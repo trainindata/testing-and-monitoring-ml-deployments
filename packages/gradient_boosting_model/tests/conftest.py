@@ -23,6 +23,12 @@ def pipeline_inputs():
     return X_train, X_test, y_train, y_test
 
 
+@pytest.fixture()
+def raw_training_data():
+    # For larger datasets, here we would use a testing sub-sample.
+    return load_dataset(file_name=config.app_config.training_data_file)
+
+
 @pytest.fixture(scope="function")
 def sample_input_data():
     return load_dataset(file_name=config.app_config.test_data_file)
