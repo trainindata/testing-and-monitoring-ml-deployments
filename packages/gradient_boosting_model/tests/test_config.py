@@ -12,6 +12,7 @@ from pydantic import ValidationError
 TEST_CONFIG_TEXT = """
 package_name: gradient_boosting_model
 training_data_file: houseprice.csv
+test_data_file: test.csv
 drop_features: YrSold
 pipeline_name: gb_regression
 pipeline_save_file: gb_regression_output_v
@@ -43,6 +44,7 @@ allowed_loss_functions:
 INVALID_TEST_CONFIG_TEXT = """
 package_name: gradient_boosting_model
 training_data_file: houseprice.csv
+test_data_file: test.csv
 drop_features: YrSold
 pipeline_name: gb_regression
 pipeline_save_file: gb_regression_output_v
