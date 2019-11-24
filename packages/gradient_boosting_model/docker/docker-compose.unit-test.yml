@@ -4,4 +4,6 @@ services:
     build:
       context: ../
       dockerfile: docker/Dockerfile.test
+      args:
+        - PIP_EXTRA_INDEX_URL
     command: bash -c "make test-unit"
