@@ -15,10 +15,3 @@ marshmallow>=3.2.2,<4.0
 # packaging
 setuptools>=41.4.0,<42.0.0
 wheel>=0.33.6,<0.34.0
-
-# testing requirements
-pytest>=5.3.2,<6.0.0
-
-# old model for testing purposes
-# source code: https://github.com/trainindata/deploying-machine-learning-models/tree/master/packages/regression_model
-tid-regression-model>=2.0.20,<2.1.0
