@@ -113,7 +113,7 @@ venv.bak/
 logs/
 
 # training data
-packages/gradient_boosting_model/gradient_boosting_model/datasets/houseprice.csv
+packages/gradient_boosting_model/gradient_boosting_model/datasets/*.csv
 
 # trained models
 packages/gradient_boosting_model/gradient_boosting_model/trained_models/*.pkl
