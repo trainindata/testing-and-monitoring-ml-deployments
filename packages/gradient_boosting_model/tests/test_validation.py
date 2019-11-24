@@ -2,22 +2,19 @@ from gradient_boosting_model.processing.validation import validate_inputs
 from gradient_boosting_model.processing.data_management import load_dataset
 
 
-def test_validate_inputs():
-    # Given
-    test_inputs = load_dataset(file_name="test.csv")
-
+def test_validate_inputs(sample_input_data):
     # When
-    validated_inputs, errors = validate_inputs(input_data=test_inputs)
+    validated_inputs, errors = validate_inputs(input_data=sample_input_data)
 
     # Then
     # we expect that 2 rows are removed due to missing vars
-    assert len(test_inputs) == 1459
+    assert len(sample_input_data) == 1459
     assert len(validated_inputs) == 1457
 
 
-def test_validate_inputs_identifies_errors():
+def test_validate_inputs_identifies_errors(sample_input_data):
     # Given
-    test_inputs = load_dataset(file_name="test.csv")
+    test_inputs = sample_input_data.copy()
 
     # introduce errors
     test_inputs.at[1, "BldgType"] = 50  # we expect a string

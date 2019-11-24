@@ -22,9 +22,12 @@ def make_prediction(*, input_data: t.Union[pd.DataFrame, dict],) -> dict:
     results = {"predictions": None, "version": _version, "errors": errors}
 
     if not errors:
-        predictions = _price_pipe.predict(X=validated_data[config.model_config.features])
+        predictions = _price_pipe.predict(
+            X=validated_data[config.model_config.features]
+        )
         _logger.info(
-            f"Making predictions with model version: {_version} " f"Predictions: {predictions}"
+            f"Making predictions with model version: {_version} "
+            f"Predictions: {predictions}"
         )
         results = {"predictions": predictions, "version": _version, "errors": errors}
 
