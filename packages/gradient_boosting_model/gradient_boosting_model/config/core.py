@@ -23,6 +23,7 @@ class AppConfig(BaseModel):
     pipeline_name: str
     pipeline_save_file: str
     training_data_file: str
+    test_data_file: str
 
 
 class ModelConfig(BaseModel):

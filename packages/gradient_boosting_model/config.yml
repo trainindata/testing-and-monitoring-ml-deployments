@@ -3,6 +3,7 @@ package_name: gradient_boosting_model
 
 # Data Files
 training_data_file: houseprice.csv
+test_data_file: test.csv
 
 # this variable is to calculate the temporal variable
 # but is dropped prior to model training.
