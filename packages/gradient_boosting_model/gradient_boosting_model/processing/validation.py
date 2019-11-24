@@ -24,7 +24,7 @@ class HouseDataInputSchema(Schema):
     CentralAir = fields.Str()
     Condition1 = fields.Str()
     Condition2 = fields.Str()
-    Electrical = fields.Str()
+    Electrical = fields.Str(allow_none=True)
     EnclosedPorch = fields.Integer()
     ExterCond = fields.Str()
     ExterQual = fields.Str()
