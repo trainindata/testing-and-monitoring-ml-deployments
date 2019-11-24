@@ -24,3 +24,9 @@ pytest>=5.0.0,<6.0.0
 # old model for testing purposes
 # Installed from gemfury
 regression-model==0.0.99
+
+# repo maintenance tooling
+black>=19.10b0,<20.0
+flake8>=3.7.9,<4.0
+mypy>=0.740,<0.8
+
