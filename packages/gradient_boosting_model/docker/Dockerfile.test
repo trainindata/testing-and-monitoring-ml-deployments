@@ -14,7 +14,6 @@ RUN apt-get update -y && \
 
 RUN pip install -r /opt/app/test_requirements.txt
 
-COPY config.yml /opt/app/config.yml
 COPY tests /opt/app/tests
 COPY Makefile /opt/app/Makefile
 COPY gradient_boosting_model /opt/app/gradient_boosting_model

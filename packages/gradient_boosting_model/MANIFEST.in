@@ -8,7 +8,6 @@ include gradient_boosting_model/trained_models/*.pkl
 include gradient_boosting_model/VERSION
 include gradient_boosting_model/config.yml
 
-include ./config.yml
 include ./requirements.txt
 exclude *.log
 exclude *.cfg

@@ -9,7 +9,7 @@ import gradient_boosting_model
 # Project Directories
 ROOT = pathlib.Path(gradient_boosting_model.__file__).resolve().parent.parent
 PACKAGE_ROOT = pathlib.Path(gradient_boosting_model.__file__).resolve().parent
-CONFIG_FILE_PATH = ROOT / "config.yml"
+CONFIG_FILE_PATH = PACKAGE_ROOT / "config.yml"
 TRAINED_MODEL_DIR = PACKAGE_ROOT / "trained_models"
 DATASET_DIR = PACKAGE_ROOT / "datasets"
 
