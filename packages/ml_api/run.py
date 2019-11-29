@@ -2,7 +2,7 @@ from api.app import create_app
 
 
 class ProductionConfig:
-    pass
+    DEBUG = True
 
 
 application = create_app(

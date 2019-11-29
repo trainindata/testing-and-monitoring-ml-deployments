@@ -1,20 +1,12 @@
-from flask import Blueprint, request, jsonify
+from flask import request, jsonify
 from gradient_boosting_model.predict import make_prediction
-from gradient_boosting_model import __version__ as _version
-
-import os
 
 
-prediction_app = Blueprint('prediction_app', __name__)
-
-
-@prediction_app.route('/health', methods=['GET'])
 def health():
     if request.method == 'GET':
-        return 'ok'
+        return jsonify({'status': 'ok'})
 
 
-@prediction_app.route('/v1/predict/regression', methods=['POST'])
 def predict():
     if request.method == 'POST':
         # Step 1: Extract POST data from request body as JSON
