@@ -1,17 +1,16 @@
 import logging
 
 import connexion
-from flask import Flask
 
 _logger = logging.getLogger(__name__)
 
 
-def create_app(*, config_object) -> Flask:
+def create_app(*, config_object) -> connexion.App:
     """Create a flask app instance."""
 
     connexion_app = connexion.App(
         __name__,
-        debug=True,
+        debug=config_object.DEBUG,
         specification_dir='spec/')
     flask_app = connexion_app.app
     flask_app.config.from_object(config_object)

@@ -1,13 +1,9 @@
 from api.app import create_app
+from config import DevelopmentConfig
 
-
-class ProductionConfig:
-    DEBUG = True
-
-
-application = create_app(
-    config_object=ProductionConfig)
+_config = DevelopmentConfig()
+application = create_app(config_object=_config).app
 
 
 if __name__ == '__main__':
-    application.run()
+    application.run(port=_config.SERVER_PORT)
