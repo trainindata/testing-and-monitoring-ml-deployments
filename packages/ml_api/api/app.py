@@ -2,7 +2,7 @@ import logging
 
 import connexion
 
-_logger = logging.getLogger(__name__)
+_logger = logging.getLogger('mlApi')
 
 
 def create_app(*, config_object) -> connexion.App:

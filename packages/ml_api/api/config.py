@@ -1,4 +1,17 @@
 import os
+import logging.config
+import pathlib
+
+import api
+
+
+# Project Directories
+ROOT = pathlib.Path(api.__file__).resolve().parent.parent
+LOGGING_FILE_PATH = ROOT / "logging.cfg"
+
+
+def setup_app_logging(*, logging_config_file: pathlib.Path) -> None:
+    logging.config.fileConfig(logging_config_file)
 
 
 class Config:
