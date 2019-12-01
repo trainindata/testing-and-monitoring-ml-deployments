@@ -8,8 +8,8 @@ import api
 
 # logging format
 FORMATTER = logging.Formatter(
-    "%(asctime)s — %(name)s — %(levelname)s —"
-    "%(funcName)s:%(lineno)d — %(message)s")
+    "%(asctime)s — %(name)s — %(levelname)s —" "%(funcName)s:%(lineno)d — %(message)s"
+)
 
 # Project Directories
 ROOT = pathlib.Path(api.__file__).resolve().parent.parent
@@ -18,15 +18,15 @@ ROOT = pathlib.Path(api.__file__).resolve().parent.parent
 class Config:
     DEBUG = False
     TESTING = False
-    ENV = os.environ.get('FLASK_ENV', 'production')
-    SERVER_PORT = os.environ.get('SERVER_PORT', 5000)
-    SERVER_HOST = os.environ.get('SERVER_HOST', '0.0.0.0')
-    LOGGING_LEVEL = os.environ.get('LOGGING_LEVEL', logging.INFO)
+    ENV = os.environ.get("FLASK_ENV", "production")
+    SERVER_PORT = os.environ.get("SERVER_PORT", 5000)
+    SERVER_HOST = os.environ.get("SERVER_HOST", "0.0.0.0")
+    LOGGING_LEVEL = os.environ.get("LOGGING_LEVEL", logging.INFO)
 
 
 class DevelopmentConfig(Config):
     DEBUG = True
-    ENV = 'development'  # do not use in production!
+    ENV = "development"  # do not use in production!
     LOGGING_LEVEL = logging.DEBUG
 
 
@@ -59,12 +59,12 @@ def setup_app_logging(config: Config) -> None:
 def _disable_irrelevant_loggers() -> None:
     """Disable loggers created by packages which create a lot of noise."""
     for logger_name in (
-            'connexion.apis.flask_api',
-            'connexion.apis.abstract',
-            'connexion.decorators',
-            'connexion.operation',
-            'connexion.operations',
-            'connexion.app',
-            'openapi_spec_validator',
+        "connexion.apis.flask_api",
+        "connexion.apis.abstract",
+        "connexion.decorators",
+        "connexion.operation",
+        "connexion.operations",
+        "connexion.app",
+        "openapi_spec_validator",
     ):
         logging.getLogger(logger_name).level = logging.WARNING
