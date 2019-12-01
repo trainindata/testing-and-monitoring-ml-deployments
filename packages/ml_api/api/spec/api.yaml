@@ -1,7 +1,7 @@
 openapi: 3.0.0
 
 info:
-  title: foo
+  title: Spec for House Price Prediction API
   version: '1'
 
 servers:
