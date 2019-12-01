@@ -3,6 +3,7 @@ FROM python:3.7.5-slim-buster
 RUN mkdir -p /opt/app
 COPY requirements /opt/app/requirements
 RUN pip install --upgrade pip
+RUN pip install tox
 
 # ensure we can run the make commands
 RUN apt-get update -y && \
@@ -11,8 +12,9 @@ RUN apt-get update -y && \
  	# for swagger
  	apt-get install -y curl
 
-RUN pip install -r /opt/app/requirements/requirements.txt
-COPY Makefile /opt/app/Makefile
+RUN pip install -r /opt/app/requirements/test_requirements.txt
+COPY tests /opt/app/tests
+COPY tox.ini /opt/app/tox.ini
 COPY api /opt/app/api
 COPY run.py /opt/app/run.py
 WORKDIR /opt/app
