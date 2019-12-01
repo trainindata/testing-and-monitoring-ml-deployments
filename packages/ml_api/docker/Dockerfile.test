@@ -12,8 +12,9 @@ RUN apt-get update -y && \
  	# for swagger
  	apt-get install -y curl
 
-RUN pip install -r /opt/app/requirements/requirements.txt
+RUN pip install -r /opt/app/requirements/test_requirements.txt
 COPY Makefile /opt/app/Makefile
 COPY api /opt/app/api
 COPY run.py /opt/app/run.py
+COPY tests /opt/app/tests
 WORKDIR /opt/app
