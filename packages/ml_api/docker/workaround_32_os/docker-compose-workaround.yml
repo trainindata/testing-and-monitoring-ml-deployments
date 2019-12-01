@@ -1,0 +1,13 @@
+# This is only to be used as a workaround for students who
+# are unable to install the gradient_boosting_model package
+# because they are on a 32 bit operating system
+
+version: '3'
+services:
+  ml_api:
+    build:
+      context: ../../
+      dockerfile: docker/workaround_32_os/Dockerfile.workaround
+    ports:
+      - "5000:5000"
+    command: bash -c "tox -e integration_tests"
