@@ -5,32 +5,21 @@ info:
   version: '1'
 
 servers:
-- url: http://{base}:5000/{version}
+- url: http://{base}:5000/
   description: API for performing house price predictions.
   variables:
     base:
       default: 0.0.0.0
-    version:
-      enum:
-        - v1
-      default: v1
 
 paths:
-  /health:
+  /:
     get:
       operationId: api.controller.health
       responses:
-        200:
+        '200':
           description: API Health Status
 
-  /version:
-    get:
-      operationId: api.controller.version
-      responses:
-        200:
-          description: API and Model Versions
-
-  /predict:
+  /v1/predict:
     post:
       operationId: api.controller.predict
       requestBody:
@@ -43,8 +32,12 @@ paths:
               items:
                 $ref: '#/components/schemas/HouseDetails'
       responses:
-        200:
+        '200':
           description: House Price Predictions
+        '400':
+          description: Bad request, house data validation failed
+        '5XX':
+          description: Unexpected error
 
 components:
   schemas:
@@ -132,16 +125,3 @@ components:
         YrSold: 2010
         SaleType: WD
         SaleCondition: Normal
-
-    ClientError:
-      type: object
-      properties:
-        message:
-          type: string
-          description: "eg. There was something wrong with your request"
-        reason:
-          type: string
-          description: 'eg. Id should be a string'
-      required:
-        - message
-        - reason

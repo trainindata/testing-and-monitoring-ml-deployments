@@ -2,10 +2,13 @@ import logging
 
 import connexion
 
-_logger = logging.getLogger('mlApi')
+from api.config import Config
 
 
-def create_app(*, config_object) -> connexion.App:
+_logger = logging.getLogger(__name__)
+
+
+def create_app(*, config_object: Config) -> connexion.App:
     """Create a flask app instance."""
 
     connexion_app = connexion.App(
@@ -16,6 +19,6 @@ def create_app(*, config_object) -> connexion.App:
     flask_app.config.from_object(config_object)
     connexion_app.add_api('api.yaml')
 
-    _logger.debug('Application instance created')
+    _logger.info('Application instance created')
 
     return connexion_app

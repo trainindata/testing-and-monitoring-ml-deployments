@@ -6,7 +6,6 @@ services:
       dockerfile: docker/Dockerfile
       args:
         - PIP_EXTRA_INDEX_URL
-
     ports:
       - "5000:5000"   # expose webserver to localhost host:container
     command: bash -c "make run-service-development"
