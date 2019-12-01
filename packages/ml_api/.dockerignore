@@ -1,0 +1,17 @@
+exercise_notebooks/*
+*env*
+*venv*
+.circleci*
+packages/gradient_boosting_model
+*.env
+*.log
+.git
+.gitignore
+.dockerignore
+*.mypy_cache
+*.pytest_cache
+*.tox
+
+# Byte-compiled / optimized / DLL files
+*__pycache__*
+*.py[cod]
