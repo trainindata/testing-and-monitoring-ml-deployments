@@ -6,8 +6,3 @@ gradient_boosting_model==0.0.99
 # Web microframework for the API
 flask>=1.1.1,<1.2.0
 connexion[swagger-ui]>=2.4.0,<2.5.0
-
-# repo maintenance tooling
-black>=19.10b0,<20.0
-flake8>=3.7.9,<4.0
-mypy>=0.740
