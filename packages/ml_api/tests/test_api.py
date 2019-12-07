@@ -24,7 +24,7 @@ def test_prediction_endpoint(client):
     expected_output_length = input_length - 2  # we expect 2 rows to be filtered
 
     # When
-    response = client.post("/v1/predict", json=test_inputs_df.to_dict(orient="records"))
+    response = client.post("/v1/predictions", json=test_inputs_df.to_dict(orient="records"))
 
     # Then
     assert response.status_code == 200
@@ -72,7 +72,7 @@ def test_prediction_validation(field, field_value, index, expected_error, client
     test_inputs_df.loc[index, field] = field_value
 
     # When
-    response = client.post("/v1/predict", json=test_inputs_df.to_dict(orient="records"))
+    response = client.post("/v1/predictions", json=test_inputs_df.to_dict(orient="records"))
 
     # Then
     assert response.status_code == 400
