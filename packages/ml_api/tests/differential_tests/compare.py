@@ -22,12 +22,12 @@ def compare_differences(
     only_in_expected = len(expected_predictions) - len(actual_predictions)
 
     if only_in_expected:
-        raise ValueError(f'Missing {only_in_expected} predictions')
+        raise ValueError(f"Missing {only_in_expected} predictions")
 
     only_in_actual = len(actual_predictions) - len(expected_predictions)
 
     if only_in_actual:
-        raise ValueError(f'Found {only_in_actual} unexpected predictions')
+        raise ValueError(f"Found {only_in_actual} unexpected predictions")
 
     thresholds = {}
 
@@ -37,12 +37,14 @@ def compare_differences(
     if rel_tol is not None:
         thresholds["rel_tol"] = rel_tol
 
-    for index, (actual_prediction, expected_prediction) in enumerate(zip(
-        actual_predictions, expected_predictions)):
+    for index, (actual_prediction, expected_prediction) in enumerate(
+        zip(actual_predictions, expected_predictions)
+    ):
 
         if not math.isclose(expected_prediction, actual_prediction, **thresholds):
             raise ValueError(
-                f"Price prediction {index} has changed by more than the thresholds: {thresholds}: "
+                f"Price prediction {index} has changed by more "
+                f"than the thresholds: {thresholds}: "
                 f"{expected_prediction} (expected) vs "
                 f"{actual_prediction} (actual)"
             )

@@ -6,9 +6,9 @@ from gradient_boosting_model.processing.data_management import load_dataset
 
 
 SECONDARY_VARIABLES_TO_RENAME = {
-  'FirstFlrSF': '1stFlrSF',
-  'SecondFlrSF': '2ndFlrSF',
-  'ThreeSsnPortch': '3SsnPorch'
+    "FirstFlrSF": "1stFlrSF",
+    "SecondFlrSF": "2ndFlrSF",
+    "ThreeSsnPortch": "3SsnPorch",
 }
 
 
@@ -24,27 +24,26 @@ def test_health_endpoint(client):
 
 @pytest.mark.integration
 @pytest.mark.parametrize(
-    'api_endpoint, expected_no_predictions',
+    "api_endpoint, expected_no_predictions",
     (
         (
-            'v1/predictions/primary',
+            "v1/predictions/primary",
             # test csv contains 1459 rows
             # we expect 2 rows to be filtered
             1457,
-
         ),
         (
-             'v1/predictions/secondary',
-             # we expect 8 rows to be filtered
-            1451
+            "v1/predictions/secondary",
+            # we expect 8 rows to be filtered
+            1451,
         ),
-    )
+    ),
 )
 def test_prediction_endpoint(api_endpoint, expected_no_predictions, client):
     # Given
     # Load the test dataset which is included in the model package
     test_inputs_df = load_dataset(file_name="test.csv")  # dataframe
-    if api_endpoint == 'v1/predictions/secondary':
+    if api_endpoint == "v1/predictions/secondary":
         # adjust column names to those expected by the secondary model
         test_inputs_df.rename(columns=SECONDARY_VARIABLES_TO_RENAME, inplace=True)
 
@@ -97,7 +96,9 @@ def test_prediction_validation(field, field_value, index, expected_error, client
     test_inputs_df.loc[index, field] = field_value
 
     # When
-    response = client.post("/v1/predictions", json=test_inputs_df.to_dict(orient="records"))
+    response = client.post(
+        "/v1/predictions", json=test_inputs_df.to_dict(orient="records")
+    )
 
     # Then
     assert response.status_code == 400
