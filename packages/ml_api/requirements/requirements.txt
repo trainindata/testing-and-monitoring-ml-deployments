@@ -1,6 +1,9 @@
 # ML Model
 tid-gradient-boosting-model>=0.1.18,<0.2.0
 
+# Old model
+tid-regression-model>=2.0.20,<2.1.0
+
 # Web microframework for the API
 flask>=1.1.1,<1.2.0
 connexion[swagger-ui]>=2.5.1,<2.6.0

@@ -5,6 +5,13 @@ import pytest
 from gradient_boosting_model.processing.data_management import load_dataset
 
 
+SECONDARY_VARIABLES_TO_RENAME = {
+    "FirstFlrSF": "1stFlrSF",
+    "SecondFlrSF": "2ndFlrSF",
+    "ThreeSsnPortch": "3SsnPorch",
+}
+
+
 @pytest.mark.integration
 def test_health_endpoint(client):
     # When
@@ -16,23 +23,40 @@ def test_health_endpoint(client):
 
 
 @pytest.mark.integration
-def test_prediction_endpoint(client):
+@pytest.mark.parametrize(
+    "api_endpoint, expected_no_predictions",
+    (
+        (
+            "v1/predictions/gradient",
+            # test csv contains 1459 rows
+            # we expect 2 rows to be filtered
+            1457,
+        ),
+        (
+            "v1/predictions/regression",
+            # we expect 8 rows to be filtered
+            1451,
+        ),
+    ),
+)
+def test_prediction_endpoint(api_endpoint, expected_no_predictions, client):
     # Given
     # Load the test dataset which is included in the model package
     test_inputs_df = load_dataset(file_name="test.csv")  # dataframe
-    input_length = len(test_inputs_df)  # test csv contains 1459 rows
-    expected_output_length = input_length - 2  # we expect 2 rows to be filtered
+    if api_endpoint == "v1/predictions/regression":
+        # adjust column names to those expected by the secondary model
+        test_inputs_df.rename(columns=SECONDARY_VARIABLES_TO_RENAME, inplace=True)
 
     # When
     response = client.post(
-        "/v1/predictions", json=test_inputs_df.to_dict(orient="records")
+        api_endpoint, json=test_inputs_df.to_dict(orient="records")
     )
 
     # Then
     assert response.status_code == 200
     data = json.loads(response.data)
     assert data["errors"] is None
-    assert len(data["predictions"]) == expected_output_length
+    assert len(data["predictions"]) == expected_no_predictions
 
 
 # parameterizationa allows us to try many combinations of data
@@ -75,7 +99,7 @@ def test_prediction_validation(field, field_value, index, expected_error, client
 
     # When
     response = client.post(
-        "/v1/predictions", json=test_inputs_df.to_dict(orient="records")
+        "/v1/predictions/gradient", json=test_inputs_df.to_dict(orient="records")
     )
 
     # Then
