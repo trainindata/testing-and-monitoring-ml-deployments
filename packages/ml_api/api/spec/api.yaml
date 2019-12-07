@@ -19,9 +19,29 @@ paths:
         '200':
           description: API Health Status
 
-  /v1/predictions:
+  /v1/predictions/gradient:
     post:
       operationId: api.controller.predict
+      requestBody:
+        description: House details used to make price prediction
+        required: true
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/HouseDetails'
+      responses:
+        '200':
+          description: House Price Predictions
+        '400':
+          description: Bad request, house data validation failed
+        '5XX':
+          description: Unexpected error
+
+  /v1/predictions/regression:
+    post:
+      operationId: api.controller.predict_previous
       requestBody:
         description: House details used to make price prediction
         required: true
