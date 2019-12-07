@@ -31,5 +31,7 @@ def test_model_prediction_differentials(client):
     compare_differences(
         expected_predictions=secondary_predictions[:10],
         actual_predictions=primary_predictions[:10],
+        # you would adjust the rel_tol level parameter on your model.
+        # right now this is extremely permissive of variation.
         rel_tol=0.2,
     )
