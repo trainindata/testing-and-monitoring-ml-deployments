@@ -3,6 +3,10 @@
 # ML Model
 gradient_boosting_model==0.0.99
 
+# Old model
+regression-model==0.0.4444
+
+
 # Web microframework for the API
 flask>=1.1.1,<1.2.0
 connexion[swagger-ui]>=2.4.0,<2.5.0
