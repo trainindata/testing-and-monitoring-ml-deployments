@@ -97,7 +97,7 @@ def test_prediction_validation(field, field_value, index, expected_error, client
 
     # When
     response = client.post(
-        "/v1/predictions", json=test_inputs_df.to_dict(orient="records")
+        "/v1/predictions/primary", json=test_inputs_df.to_dict(orient="records")
     )
 
     # Then

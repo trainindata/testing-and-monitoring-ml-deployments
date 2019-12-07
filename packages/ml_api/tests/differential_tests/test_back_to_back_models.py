@@ -25,6 +25,9 @@ def test_model_prediction_differentials(client):
     )
     secondary_predictions = json.loads(secondary_response.data)["predictions"]
 
+    # We just pass in the first 10 rows as the two models' validation differs
+    # which means they filter out a slightly different number of rows
+    # which would cause the differential tests to fail.
     compare_differences(
         expected_predictions=secondary_predictions[:10],
         actual_predictions=primary_predictions[:10],
