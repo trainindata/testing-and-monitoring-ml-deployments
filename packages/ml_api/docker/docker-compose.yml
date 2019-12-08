@@ -1,6 +1,7 @@
 version: '3'
 services:
   ml_api:
+    image: christophergs/ml_api:master
     build:
       context: ../
       dockerfile: docker/Dockerfile
