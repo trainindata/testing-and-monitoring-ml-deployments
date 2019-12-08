@@ -2,7 +2,7 @@ exercise_notebooks/*
 */env*
 */venv*
 .circleci*
-packages/regression_model
+packages/gradient_boosting_model
 *.env
 *.log
 .git
