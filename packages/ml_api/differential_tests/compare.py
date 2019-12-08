@@ -1,5 +1,12 @@
-import typing as t
+import json
 import math
+import sys
+import typing as t
+from argparse import Namespace
+
+from termcolor import cprint
+
+from api.config import ROOT
 
 
 def compare_differences(
@@ -40,7 +47,6 @@ def compare_differences(
     for index, (actual_prediction, expected_prediction) in enumerate(
         zip(actual_predictions, expected_predictions)
     ):
-
         if not math.isclose(expected_prediction, actual_prediction, **thresholds):
             raise ValueError(
                 f"Price prediction {index} has changed by more "
@@ -48,3 +54,42 @@ def compare_differences(
                 f"{expected_prediction} (expected) vs "
                 f"{actual_prediction} (actual)"
             )
+
+
+def compare_predictions(args: Namespace) -> None:
+    expected_results_dir = ROOT / args.expected_results_dir
+    actual_results_dir = ROOT / args.actual_results_dir
+
+    expected_results_filenames = list(expected_results_dir.glob("*.json"))
+
+    if not expected_results_filenames:
+        print("No results found!")
+        sys.exit(1)
+
+    for expected_results_filename in sorted(expected_results_filenames):
+        name = expected_results_filename.name
+        actual_results_filename = actual_results_dir / name
+
+        print(
+            f"Comparing {expected_results_filename} with {actual_results_filename} ... ",
+            end="",
+        )
+
+        with expected_results_filename.open() as f:
+            expected_results = json.load(f)
+
+        with actual_results_filename.open() as f:
+            actual_results = json.load(f)
+
+        try:
+            compare_differences(
+                expected_predictions=expected_results["predictions"],
+                actual_predictions=actual_results["predictions"],
+                rel_tol=args.rel_tol,
+                abs_tol=args.abs_tol,
+            )
+        except ValueError as exc:
+            cprint("ERROR", "red")
+            cprint(f"  • {exc}", "red")
+        else:
+            cprint("OK", "green")

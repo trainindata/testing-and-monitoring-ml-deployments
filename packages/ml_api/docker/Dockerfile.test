@@ -17,4 +17,6 @@ COPY Makefile /opt/app/Makefile
 COPY api /opt/app/api
 COPY run.py /opt/app/run.py
 COPY tests /opt/app/tests
+COPY differential_tests /opt/app/differential_tests
+ENV PYTHONPATH "${PYTHONPATH}:/opt/app/"
 WORKDIR /opt/app
