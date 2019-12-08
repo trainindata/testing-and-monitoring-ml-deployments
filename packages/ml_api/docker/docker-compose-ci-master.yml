@@ -1,0 +1,20 @@
+version: '3'
+services:
+
+  ml_api:
+    image: christophergs/ml_api:${TARGET}
+    environment:
+      SERVER_PORT: ${SERVER_PORT:-5000}
+    build:
+      context: ../
+      dockerfile: docker/Dockerfile.test
+    ports:
+      - "5000:5000"
+    tty: true
+    command: bash -c "make run-service-development"
+
+  differential-tests:
+    image: christophergs/ml_api:${TARGET}
+    command: ["true"]
+    depends_on:
+      - ml_api

@@ -125,3 +125,7 @@ test.csv
 # trained models
 packages/gradient_boosting_model/gradient_boosting_model/trained_models/*.pkl
 *.h5
+
+# differential test artifacts
+packages/ml_api/differential_tests/expected_results/
+packages/ml_api/differential_tests/actual_results/
