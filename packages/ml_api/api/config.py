@@ -22,6 +22,10 @@ class Config:
     SERVER_PORT = os.environ.get("SERVER_PORT", 5000)
     SERVER_HOST = os.environ.get("SERVER_HOST", "0.0.0.0")
     LOGGING_LEVEL = os.environ.get("LOGGING_LEVEL", logging.INFO)
+    SQLALCHEMY_DATABASE_URI = (
+        f"postgresql+psycopg2://{os.environ['DB_USER']}:"
+        f"{os.environ['DB_PASSWORD']}@{os.environ['DB_HOST']}/{os.environ['DB_NAME']}"
+    )
 
 
 class DevelopmentConfig(Config):

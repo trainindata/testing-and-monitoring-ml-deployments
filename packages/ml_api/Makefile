@@ -10,7 +10,7 @@ PYTEST_INTEGRATION_OPTS = -vv -m integration tests
 PYTEST_DIFFERENTIAL_OPTS = -vv -m differential tests
 
 # Specify phony list to ensure make recipes do not conflict with real file names
-.PHONY: run-service-local test-integration tag-push-master tag-push-local
+.PHONY: run-service-local test-integration tag-push-master tag-push-local db-migrations
 
 tag-push-local:
 	@echo "+ $@"
@@ -34,3 +34,7 @@ test-integration:
 test-differential: test-integration
 	@echo "+ $@"
 	PYTHONPATH=. pytest ${PYTEST_DIFFERENTIAL_OPTS}
+
+db-migrations:
+	@echo "+ $@"
+	alembic -c alembic.ini upgrade head
