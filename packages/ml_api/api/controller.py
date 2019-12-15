@@ -35,7 +35,7 @@ def predict():
             inputs=json_data,
             model_version=version,
             predictions=predictions,
-            db_model=ModelType.GRADIENT_BOOSTING
+            db_model=ModelType.GRADIENT_BOOSTING,
         )
 
         # Step 6: Prepare prediction response

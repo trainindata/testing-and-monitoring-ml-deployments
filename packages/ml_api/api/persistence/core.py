@@ -22,11 +22,9 @@ def create_db_engine_from_config(*, config: Config) -> Engine:
     a specific kind of database / DBAPI combination.
     """
 
-    engine = create_engine(
-        config.SQLALCHEMY_DATABASE_URI,
-    )
+    engine = create_engine(config.SQLALCHEMY_DATABASE_URI,)
 
-    _logger.info(f'creating DB conn with URI: {config.SQLALCHEMY_DATABASE_URI}')
+    _logger.info(f"creating DB conn with URI: {config.SQLALCHEMY_DATABASE_URI}")
     return engine
 
 
@@ -37,11 +35,7 @@ def create_db_session(*, engine: Engine) -> scoped_session:
      associated with it during its lifespan.
      """
     return scoped_session(
-        sessionmaker(
-            autocommit=False,
-            autoflush=False,
-            bind=engine,
-        ),
+        sessionmaker(autocommit=False, autoflush=False, bind=engine,),
     )
 
 

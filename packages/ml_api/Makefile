@@ -37,4 +37,4 @@ test-differential: test-integration
 
 db-migrations:
 	@echo "+ $@"
-	PYTHONPATH=. alembic -c alembic.ini upgrade head
+	alembic -c alembic.ini upgrade head
