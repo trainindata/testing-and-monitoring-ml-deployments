@@ -12,6 +12,9 @@ packages/gradient_boosting_model
 *.pytest_cache
 *.tox
 
+# alembic
+!alembic/env.py
+
 # Byte-compiled / optimized / DLL files
 *__pycache__*
 *.py[cod]

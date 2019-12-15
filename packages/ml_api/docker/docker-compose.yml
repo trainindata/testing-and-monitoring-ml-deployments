@@ -1,10 +1,31 @@
 version: '3'
 services:
   ml_api:
-    image: christophergs/ml_api:master
     build:
       context: ../
       dockerfile: docker/Dockerfile
+    environment:
+      DB_HOST: database
+      DB_PORT: 5432
+      DB_USER: user
+      DB_PASSWORD: ${DB_PASSWORD:-password}
+      DB_NAME: ml_api
+    depends_on:
+      - database
     ports:
       - "5000:5000"   # expose webserver to localhost host:container
-    command: bash -c "make run-service-development"
+    command: bash -c "make db-migrations && make run-service-development"
+
+  database:
+    image: postgres:latest
+    environment:
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: ml_api
+    ports:
+      - "6609:5432"
+    volumes:
+      - my_dbdata:/var/lib/postgresql/data
+
+volumes:
+  my_dbdata:
