@@ -15,20 +15,9 @@ config = context.config
 database_url = os.environ.get("ALEMBIC_DB_URI", user_config.SQLALCHEMY_DATABASE_URI)
 config.set_main_option("sqlalchemy.url", database_url)
 
-# Interpret the config file for Python logging.
-# This line sets up loggers basically.
-# fileConfig(config.config_file_name)
-
 # add your model's MetaData object here
 # for 'autogenerate' support
-# from myapp import mymodel
-# target_metadata = mymodel.Base.metadata
 target_metadata = Base.metadata
-
-# other values from the config, defined by the needs of env.py,
-# can be acquired:
-# my_important_option = config.get_main_option("my_important_option")
-# ... etc.
 
 
 def run_migrations_offline():

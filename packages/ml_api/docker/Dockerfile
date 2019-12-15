@@ -1,8 +1,5 @@
 FROM python:3.7.5-slim-buster
 
-# Create the user that will run the app
-RUN adduser --disabled-password --gecos '' ml-api-user
-
 ARG PIP_EXTRA_INDEX_URL
 RUN mkdir -p /opt/app
 COPY requirements /opt/app/requirements
