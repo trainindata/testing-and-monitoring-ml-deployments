@@ -5,7 +5,8 @@ REPO=UPDATEME
 PASSWORD=UPDATEME
 
 # Specify phony list to ensure make recipes do not conflict with real file names
-.PHONY: run-service-development tag-push-master tag-push-local
+.PHONY: run-service-development tag-push-master tag-push-local db-migrations
+
 
 tag-push-local:
 	@echo "+ $@"
@@ -23,3 +24,7 @@ tag-push-master:
 run-service-development:
 	@echo "+ $@"
 	python run.py
+
+db-migrations:
+	@echo "+ $@"
+	alembic -c alembic.ini upgrade head
