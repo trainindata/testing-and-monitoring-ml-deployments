@@ -9,3 +9,11 @@ regression-model==0.0.4444
 # Web microframework for the API
 flask>=1.1.1,<1.2.0
 connexion[swagger-ui]>=2.4.0,<2.5.0
+
+# Persistence
+
+sqlalchemy>=1.3.11,<1.4.0  # ORM
+psycopg2>=2.8.4,<2.9.0  # DB Driver
+alembic>=1.3.1,<1.4.0  # DB Migrations
+
+

@@ -1,5 +1,8 @@
 FROM python:3.7.5-slim-buster
 
+# Create the user that will run the app
+RUN adduser --disabled-password --gecos '' ml-api-user
+
 ARG PIP_EXTRA_INDEX_URL
 RUN mkdir -p /opt/app
 COPY requirements /opt/app/requirements
@@ -13,7 +16,11 @@ RUN apt-get update -y && \
  	apt-get install -y curl
 
 RUN pip install -r /opt/app/requirements/requirements.txt
+ENV PYTHONPATH "${PYTHONPATH}:/opt/app/"
 COPY Makefile /opt/app/Makefile
 COPY api /opt/app/api
 COPY run.py /opt/app/run.py
 WORKDIR /opt/app
+
+# DB migrations
+alembic -c alembic.ini upgrade head

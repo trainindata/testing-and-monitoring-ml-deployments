@@ -22,6 +22,8 @@ class Config:
     SERVER_PORT = os.environ.get("SERVER_PORT", 5000)
     SERVER_HOST = os.environ.get("SERVER_HOST", "0.0.0.0")
     LOGGING_LEVEL = os.environ.get("LOGGING_LEVEL", logging.INFO)
+    SQLALCHEMY_DATABASE_URI = os.environ.get(
+        'DATABASE_URI', "postgresql://user:password@localhost:6609/ml_api")
 
 
 class DevelopmentConfig(Config):

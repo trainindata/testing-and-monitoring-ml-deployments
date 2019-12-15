@@ -7,6 +7,24 @@ services:
       dockerfile: docker/Dockerfile
       args:
         - PIP_EXTRA_INDEX_URL
+    environment:
+      DB_HOST: localhost
+      DB_PORT: 5432
+      DATABASE_URI: ${DATABASE_URI:-postgresql://user:password@localhost:6609/ml_api}
     ports:
       - "5000:5000"   # expose webserver to localhost host:container
     command: bash -c "make run-service-development"
+
+  database:
+    image: postgres:latest
+    environment:
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: ml_api
+    ports:
+      - "6609:5432"
+    volumes:
+      - my_dbdata:/var/lib/postgresql/data
+
+volumes:
+  my_dbdata:
