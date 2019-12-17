@@ -22,9 +22,13 @@ class Config:
     SERVER_PORT = os.environ.get("SERVER_PORT", 5000)
     SERVER_HOST = os.environ.get("SERVER_HOST", "0.0.0.0")
     LOGGING_LEVEL = os.environ.get("LOGGING_LEVEL", logging.INFO)
+    DB_USER = os.environ.get('DB_USER', 'user')
+    DB_PASSWORD = os.environ.get('DB_PASSWORD', 'password')
+    DB_HOST = os.environ.get('DB_HOST', '0.0.0.0')
+    DB_NAME = os.environ.get('DB_NAME', 'ml_api')
     SQLALCHEMY_DATABASE_URI = (
-        f"postgresql+psycopg2://{os.environ['DB_USER']}:"
-        f"{os.environ['DB_PASSWORD']}@{os.environ['DB_HOST']}/{os.environ['DB_NAME']}"
+        f"postgresql+psycopg2://{DB_USER}:"
+        f"{DB_PASSWORD}@{DB_HOST}/{DB_NAME}"
     )
 
 
@@ -32,12 +36,30 @@ class DevelopmentConfig(Config):
     DEBUG = True
     ENV = "development"  # do not use in production!
     LOGGING_LEVEL = logging.DEBUG
+    DB_USER = os.environ.get('DB_USER', 'user')
+    DB_PASSWORD = os.environ.get('DB_PASSWORD', 'password')
+    DB_HOST = os.environ.get('DB_HOST', '0.0.0.0')
+    DB_NAME = 'ml_api_dev'
+
+    SQLALCHEMY_DATABASE_URI = (
+        f"postgresql+psycopg2://{DB_USER}:"
+        f"{DB_PASSWORD}@{DB_HOST}/{DB_NAME}"
+    )
 
 
 class TestingConfig(Config):
     DEBUG = True
     TESTING = True
     LOGGING_LEVEL = logging.DEBUG
+    DB_USER = 'test_user'
+    DB_PASSWORD = 'password'
+    DB_HOST = '0.0.0.0'
+    DB_NAME = 'ml_api_test'
+    DB_PORT = 5433
+    SQLALCHEMY_DATABASE_URI = (
+        f"postgresql+psycopg2://{DB_USER}:"
+        f"{DB_PASSWORD}@{DB_HOST}:{DB_PORT}/{DB_NAME}"
+    )
 
 
 class ProductionConfig(Config):

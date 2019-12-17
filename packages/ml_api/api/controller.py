@@ -33,7 +33,7 @@ def predict():
 
         # Step 3: Handle errors
         if result.errors:
-            _logger.warn(f"errors during prediction: {result.errors}")
+            _logger.warning(f"errors during prediction: {result.errors}")
             return Response(json.dumps(result.errors), status=400)
 
         # Step 4: Prepare prediction response
