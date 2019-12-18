@@ -7,3 +7,26 @@ services:
       args:
         - PIP_EXTRA_INDEX_URL
     command: bash -c "make test-differential"
+    environment:
+      DB_HOST: test_database
+      DB_PORT: 6608
+      DB_USER: user
+      DB_PASSWORD: ${DB_PASSWORD:-password}
+      DB_NAME: ml_api_test
+    depends_on:
+      - test_database
+    ports:
+      - "5000:5000"   # expose webserver to localhost host:container
+
+  test_database:
+    image: postgres:latest
+    environment:
+      POSTGRES_USER: test_user
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: ml_api_test
+    ports:
+      - "6608:5432"
+    volumes:
+      - test_dbdata:/var/lib/postgresql/test_data
+volumes:
+  test_dbdata:

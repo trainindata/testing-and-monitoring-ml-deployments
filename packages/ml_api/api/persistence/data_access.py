@@ -1,8 +1,10 @@
 import enum
+import json
 import logging
 import typing as t
 
 import numpy as np
+import pandas as pd
 from gradient_boosting_model.predict import make_prediction
 from regression_model.predict import make_prediction as make_shadow_prediction
 from sqlalchemy.orm.session import Session
@@ -11,6 +13,12 @@ from api.persistence.models import (
     LassoModelPredictions,
     GradientBoostingModelPredictions,
 )
+
+SECONDARY_VARIABLES_TO_RENAME = {
+    "FirstFlrSF": "1stFlrSF",
+    "SecondFlrSF": "2ndFlrSF",
+    "ThreeSsnPortch": "3SsnPorch",
+}
 
 _logger = logging.getLogger(__name__)
 
@@ -45,6 +53,13 @@ class PredictionPersistence:
     ) -> PredictionResult:
         """Get the prediction from a given model and persist it."""
         # Access the model prediction function via mapping
+        if db_model == ModelType.LASSO:
+            # we have to rename a few of the columns for backwards
+            # compatibility with the regression model package.
+            secondary_frame = pd.DataFrame(input_data)
+            input_data = secondary_frame.rename(
+                columns=SECONDARY_VARIABLES_TO_RENAME).to_dict(orient='records')
+
         result = MODEL_PREDICTION_MAP[db_model](input_data=input_data)
         errors = None
         try:
@@ -55,7 +70,7 @@ class PredictionPersistence:
 
         prediction_result = PredictionResult(
             errors=errors,
-            predictions=result.get("predictions").tolist(),
+            predictions=result.get("predictions").tolist() if not errors else None,
             model_version=result.get("version"),
         )
 
@@ -80,15 +95,15 @@ class PredictionPersistence:
             prediction_data = LassoModelPredictions(
                 user_id=self.user_id,
                 model_version=prediction_result.model_version,
-                inputs=inputs,
-                outputs=prediction_result.predictions,
+                inputs=json.dumps(inputs),
+                outputs=json.dumps(prediction_result.predictions),
             )
         else:
             prediction_data = GradientBoostingModelPredictions(
                 user_id=self.user_id,
                 model_version=prediction_result.model_version,
-                inputs=inputs,
-                outputs=prediction_result.predictions,
+                inputs=json.dumps(inputs),
+                outputs=json.dumps(prediction_result.predictions),
             )
 
         self.db_session.add(prediction_data)

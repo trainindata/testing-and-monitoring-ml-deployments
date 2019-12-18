@@ -4,12 +4,7 @@ import numpy as np
 import pytest
 from gradient_boosting_model.processing.data_management import load_dataset
 
-
-SECONDARY_VARIABLES_TO_RENAME = {
-    "FirstFlrSF": "1stFlrSF",
-    "SecondFlrSF": "2ndFlrSF",
-    "ThreeSsnPortch": "3SsnPorch",
-}
+from api.persistence.data_access import SECONDARY_VARIABLES_TO_RENAME
 
 
 @pytest.mark.integration

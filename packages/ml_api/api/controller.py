@@ -3,6 +3,7 @@ import logging
 
 from flask import request, jsonify, Response, current_app
 from regression_model.predict import make_prediction as make_secondary_prediction
+import pandas as pd
 
 from api.persistence.data_access import PredictionPersistence, ModelType
 

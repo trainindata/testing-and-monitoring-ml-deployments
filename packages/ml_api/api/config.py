@@ -51,11 +51,13 @@ class TestingConfig(Config):
     DEBUG = True
     TESTING = True
     LOGGING_LEVEL = logging.DEBUG
-    DB_USER = 'test_user'
-    DB_PASSWORD = 'password'
-    DB_HOST = '0.0.0.0'
+
+    # DB config matches test docker container
+    DB_USER = os.environ.get('DB_USER', 'test_user')
+    DB_PASSWORD = os.environ.get('DB_PASSWORD', 'password')
+    DB_HOST = os.environ.get('DB_HOST', '0.0.0.0')
     DB_NAME = 'ml_api_test'
-    DB_PORT = 5433
+    DB_PORT = 6608
     SQLALCHEMY_DATABASE_URI = (
         f"postgresql+psycopg2://{DB_USER}:"
         f"{DB_PASSWORD}@{DB_HOST}:{DB_PORT}/{DB_NAME}"

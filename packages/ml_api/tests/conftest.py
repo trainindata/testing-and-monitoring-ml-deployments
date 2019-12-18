@@ -2,30 +2,33 @@ import mock
 import os
 import pytest
 
-from sqlalchemy_utils import drop_database
+from sqlalchemy_utils import drop_database, create_database, database_exists
 
 from api.config import TestingConfig
 from api.app import create_app
 from api.persistence import core
 
-
 @pytest.fixture
-def _db_session(postgresql_proc):
-    """ Create an in-memory DB session for testing.
-    """
+def _db():
+    db_url = TestingConfig.SQLALCHEMY_DATABASE_URI
+    if not database_exists(db_url):
+        create_database(db_url)
     # alembic can be configured through the configuration file. For testing
     # purposes 'env.py' also checks the 'ALEMBIC_DB_URI' variable first.
-    db_url = TestingConfig.SQLALCHEMY_DATABASE_URI
-    engine = core.create_db_engine_from_config(config=TestingConfig)
+    engine = core.create_db_engine_from_config(config=TestingConfig())
     evars = {'ALEMBIC_DB_URI': db_url}
     with mock.patch.dict(os.environ, evars):  # type: ignore
         core.run_migrations()
 
-    session = core.create_db_session(engine)
-    yield session
+    yield engine
 
-    # clean up
-    drop_database(db_url)
+
+@pytest.fixture
+def _db_session(_db):
+    """ Create DB session for testing.
+    """
+    session = core.create_db_session(engine=_db)
+    yield session
 
 
 @pytest.fixture
