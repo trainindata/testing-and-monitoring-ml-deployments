@@ -8,9 +8,9 @@ services:
         - PIP_EXTRA_INDEX_URL
     command: bash -c "make test-differential"
     environment:
-      DB_HOST: test_database
-      DB_PORT: 6608
-      DB_USER: user
+      DB_HOST: ${DB_HOST:-test_database}
+      DB_PORT: 5432
+      DB_USER: test_user
       DB_PASSWORD: ${DB_PASSWORD:-password}
       DB_NAME: ml_api_test
     depends_on:

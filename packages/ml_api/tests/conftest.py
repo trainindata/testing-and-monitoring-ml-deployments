@@ -1,12 +1,13 @@
-import mock
 import os
+
+import mock
 import pytest
+from sqlalchemy_utils import create_database, database_exists
 
-from sqlalchemy_utils import drop_database, create_database, database_exists
-
-from api.config import TestingConfig
 from api.app import create_app
+from api.config import TestingConfig
 from api.persistence import core
+
 
 @pytest.fixture
 def _db():
@@ -17,7 +18,7 @@ def _db():
     # purposes 'env.py' also checks the 'ALEMBIC_DB_URI' variable first.
     engine = core.create_db_engine_from_config(config=TestingConfig())
     evars = {'ALEMBIC_DB_URI': db_url}
-    with mock.patch.dict(os.environ, evars):  # type: ignore
+    with mock.patch.dict(os.environ, evars):
         core.run_migrations()
 
     yield engine

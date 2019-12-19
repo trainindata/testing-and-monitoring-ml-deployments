@@ -6,11 +6,10 @@ from sqlalchemy.orm import scoped_session
 from api.config import Config
 from api.persistence.core import init_database
 
-
 _logger = logging.getLogger(__name__)
 
 
-def create_app(*, config_object: Config, db_session: scoped_session=None
+def create_app(*, config_object: Config, db_session: scoped_session = None
                ) -> connexion.App:
     """Create app instance."""
 

@@ -15,10 +15,6 @@ RUN apt-get update -y && \
  	apt-get install -y libpq-dev
 
 RUN pip install -r /opt/app/requirements/test_requirements.txt
-COPY Makefile /opt/app/Makefile
-COPY api /opt/app/api
-COPY run.py /opt/app/run.py
-COPY tests /opt/app/tests
-COPY differential_tests /opt/app/differential_tests
+ADD . /opt/app
 ENV PYTHONPATH "${PYTHONPATH}:/opt/app/"
 WORKDIR /opt/app

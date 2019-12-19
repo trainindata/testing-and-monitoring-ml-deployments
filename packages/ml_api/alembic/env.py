@@ -6,7 +6,7 @@ from sqlalchemy import engine_from_config, pool
 # Import the models so the changes in them are automatically reflected in the
 # generated migrations.
 from api.persistence import models  # noqa
-from api.config import ProductionConfig as user_config
+from api.config import DevelopmentConfig as user_config
 from api.persistence.core import Base
 
 # this is the Alembic Config object, which provides
