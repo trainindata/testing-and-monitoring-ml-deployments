@@ -3,8 +3,10 @@ import json
 import numpy as np
 import pytest
 from gradient_boosting_model.processing.data_management import load_dataset
+from sqlalchemy import func
 
 from api.persistence.data_access import SECONDARY_VARIABLES_TO_RENAME
+from api.persistence.models import GradientBoostingModelPredictions, LassoModelPredictions
 
 
 @pytest.mark.integration
@@ -99,3 +101,25 @@ def test_prediction_validation(field, field_value, index, expected_error, client
     assert response.status_code == 400
     data = json.loads(response.data)
     assert data == expected_error
+
+
+def test_prediction_data_saved(client, app):
+    # Given
+    # Load the test dataset which is included in the model package
+    test_inputs_df = load_dataset(file_name="test.csv")  # dataframe
+    gradient_record_count = app.db_session.query(
+        GradientBoostingModelPredictions).count()
+    lasso_record_count = app.db_session.query(
+        LassoModelPredictions).count()
+
+    # When
+    response = client.post(
+        "/v1/predictions/primary", json=test_inputs_df.to_dict(orient="records")
+    )
+
+    # Then
+    assert response.status_code == 200
+    assert app.db_session.query(
+        GradientBoostingModelPredictions).count() == gradient_record_count + 1
+    assert app.db_session.query(
+        LassoModelPredictions).count() == lasso_record_count + 1

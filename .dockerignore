@@ -16,13 +16,3 @@ packages/gradient_boosting_model
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
-
-# Unit test / coverage reports
-htmlcov/
-.tox/
-.coverage
-.cache
-coverage.xml
-
-# Sphinx documentation
-docs/_build/

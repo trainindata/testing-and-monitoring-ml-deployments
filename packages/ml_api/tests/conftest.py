@@ -2,6 +2,7 @@ import os
 
 import mock
 import pytest
+from gradient_boosting_model.processing.data_management import load_dataset
 from sqlalchemy_utils import create_database, database_exists
 
 from api.app import create_app
@@ -44,3 +45,11 @@ def app(_db_session):
 def client(app):
     with app.test_client() as client:
         yield client  # Has to be yielded to access session cookies
+
+
+@pytest.fixture(scope='session')
+def input_data():
+    # Load the gradient boosting test dataset which
+    # is included in the model package
+    test_inputs_df = load_dataset(file_name="test.csv")
+    return test_inputs_df.copy(deep=True)
