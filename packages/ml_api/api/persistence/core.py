@@ -1,12 +1,15 @@
 import logging
+import os
 
+import alembic.config
 from flask import Flask
 from sqlalchemy import create_engine
 from sqlalchemy.engine import Engine
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import scoped_session, sessionmaker
+from sqlalchemy_utils import database_exists, create_database
 
-from api.config import Config
+from api.config import Config, ROOT
 
 _logger = logging.getLogger(__name__)
 
@@ -22,9 +25,12 @@ def create_db_engine_from_config(*, config: Config) -> Engine:
     a specific kind of database / DBAPI combination.
     """
 
-    engine = create_engine(config.SQLALCHEMY_DATABASE_URI,)
+    db_url = config.SQLALCHEMY_DATABASE_URI
+    if not database_exists(db_url):
+        create_database(db_url)
+    engine = create_engine(db_url)
 
-    _logger.info(f"creating DB conn with URI: {config.SQLALCHEMY_DATABASE_URI}")
+    _logger.info(f"creating DB conn with URI: {db_url}")
     return engine
 
 
@@ -51,3 +57,17 @@ def init_database(app: Flask, config: Config, db_session=None) -> None:
     @app.teardown_appcontext
     def shutdown_session(exception=None):
         db_session.remove()
+
+
+def run_migrations():
+    """Run the DB migrations prior to the tests."""
+
+    # alembic looks for the migrations in the current
+    # directory so we change to the correct directory.
+    os.chdir(str(ROOT))
+    alembicArgs = [
+        "--raiseerr",
+        "upgrade",
+        "head",
+    ]
+    alembic.config.main(argv=alembicArgs)

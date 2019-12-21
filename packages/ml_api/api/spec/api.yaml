@@ -19,7 +19,7 @@ paths:
         '200':
           description: API Health Status
 
-  /v1/predictions/gradient:
+  /v1/predictions/regression:
     post:
       operationId: api.controller.predict
       requestBody:
@@ -39,7 +39,7 @@ paths:
         '5XX':
           description: Unexpected error
 
-  /v1/predictions/regression:
+  /v1/predictions/gradient:
     post:
       operationId: api.controller.predict_previous
       requestBody:

@@ -3,7 +3,7 @@ import json
 import pytest
 from gradient_boosting_model.processing.data_management import load_dataset
 
-from tests.test_api import SECONDARY_VARIABLES_TO_RENAME
+from api.persistence.data_access import SECONDARY_VARIABLES_TO_RENAME
 from differential_tests.compare import compare_differences
 
 
