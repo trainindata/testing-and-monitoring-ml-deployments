@@ -1,9 +1,35 @@
 version: '3'
 services:
-  test:
+  ml_api_test:
+    image: christophergs/ml_api:master
     build:
       context: ../
       dockerfile: docker/Dockerfile.test
       args:
         - PIP_EXTRA_INDEX_URL
-    command: bash -c "make test-differential"
+    environment:
+      DB_HOST: test_database
+      DB_PORT: 5432
+      DB_USER: test_user
+      DB_PASSWORD: ${DB_PASSWORD:-password}
+      DB_NAME: ml_api_test
+    depends_on:
+      - test_database
+    ports:
+      - "5000:5000"   # expose webserver to localhost host:container
+    command: bash -c "make test-all"
+
+  test_database:
+    image: postgres:latest
+    environment:
+      POSTGRES_USER: test_user
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: ml_api_test
+    ports:
+      # expose postgres container on different host port to default (host:container)
+      - "6608:5432"
+    volumes:
+      - my_dbdata_test:/var/lib/postgresql/test_data
+
+volumes:
+  my_dbdata_test:

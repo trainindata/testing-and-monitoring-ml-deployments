@@ -3,6 +3,9 @@ NAME=ml_api
 VERSION=$(shell git rev-parse HEAD)
 REPO=christophergs
 
+# pytest unit testing options
+PYTEST_UNIT_OPTS = -vv -m "not integration and not differential" tests
+
 # pytest integration testing options
 PYTEST_INTEGRATION_OPTS = -vv -m integration tests
 
@@ -27,14 +30,21 @@ run-service-development:
 	@echo "+ $@"
 	python run.py
 
+test-unit:
+	@echo "+ $@"
+	PYTHONPATH=. pytest ${PYTEST_UNIT_OPTS}
+
 test-integration:
 	@echo "+ $@"
 	PYTHONPATH=. pytest ${PYTEST_INTEGRATION_OPTS}
 
-test-differential: test-integration
+test-differential:
 	@echo "+ $@"
 	PYTHONPATH=. pytest ${PYTEST_DIFFERENTIAL_OPTS}
 
+test-all: test-unit test-integration test-differential
+	@echo "+ $@"
+
 db-migrations:
 	@echo "+ $@"
-	alembic -c alembic.ini upgrade head
+	PYTHONPATH=. alembic -c alembic.ini upgrade head

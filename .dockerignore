@@ -7,3 +7,12 @@ packages/gradient_boosting_model
 *.log
 .git
 .gitignore
+.dockerignore
+*.mypy_cache
+*.pytest_cache
+
+### Python ###
+
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
