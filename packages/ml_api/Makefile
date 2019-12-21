@@ -27,4 +27,4 @@ run-service-development:
 
 db-migrations:
 	@echo "+ $@"
-	alembic -c alembic.ini upgrade head
+	PYTHONPATH=. alembic -c alembic.ini upgrade head
