@@ -22,6 +22,7 @@ class Config:
     SERVER_PORT = os.environ.get("SERVER_PORT", 5000)
     SERVER_HOST = os.environ.get("SERVER_HOST", "0.0.0.0")
     LOGGING_LEVEL = os.environ.get("LOGGING_LEVEL", logging.INFO)
+    SHADOW_MODE_ACTIVE = True
 
     # DB config matches docker container
     DB_USER = os.environ.get("DB_USER", "user")
