@@ -1,15 +1,17 @@
 import logging
 
 import connexion
+from sqlalchemy.orm import scoped_session
 
 from api.config import Config
 from api.persistence.core import init_database
 
-
 _logger = logging.getLogger(__name__)
 
 
-def create_app(*, config_object: Config) -> connexion.App:
+def create_app(
+    *, config_object: Config, db_session: scoped_session = None
+) -> connexion.App:
     """Create app instance."""
 
     connexion_app = connexion.App(
@@ -19,7 +21,7 @@ def create_app(*, config_object: Config) -> connexion.App:
     flask_app.config.from_object(config_object)
 
     # Setup database
-    init_database(flask_app, config=config_object)
+    init_database(flask_app, config=config_object, db_session=db_session)
 
     connexion_app.add_api("api.yaml")
     _logger.info("Application instance created")

@@ -13,9 +13,6 @@ RUN apt-get update -y && \
 
 ENV PYTHONPATH "${PYTHONPATH}:/opt/app"
 RUN pip install -r /opt/app/requirements/test_requirements.txt
-COPY Makefile /opt/app/Makefile
-COPY api /opt/app/api
-COPY run.py /opt/app/run.py
-COPY differential_tests /opt/app/differential_tests
-COPY tests /opt/app/tests
+
+ADD . /opt/app
 WORKDIR /opt/app
