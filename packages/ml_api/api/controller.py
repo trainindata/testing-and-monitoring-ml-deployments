@@ -1,5 +1,6 @@
 import json
 import logging
+import threading
 
 from flask import request, jsonify, Response, current_app
 
@@ -26,10 +27,20 @@ def predict():
             db_model=ModelType.LASSO, input_data=json_data
         )
 
-        # Step 2b: Get and save shadow predictions
-        shadow_result = persistence.make_save_predictions(  # noqa
-            db_model=ModelType.GRADIENT_BOOSTING, input_data=json_data
-        )
+        # Step 2b: Get and save shadow predictions asynchronously
+        if current_app.config.get("SHADOW_MODE_ACTIVE"):
+            _logger.debug(
+                f"Calling shadow model asynchronously: "
+                f"{ModelType.GRADIENT_BOOSTING.value}"
+            )
+            thread = threading.Thread(
+                target=persistence.make_save_predictions,
+                kwargs={
+                    "db_model": ModelType.GRADIENT_BOOSTING,
+                    "input_data": json_data,
+                },
+            )
+            thread.start()
 
         # Step 3: Handle errors
         if result.errors:
