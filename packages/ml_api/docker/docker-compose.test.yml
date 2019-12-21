@@ -6,6 +6,7 @@ services:
       dockerfile: docker/Dockerfile.test
       args:
         - PIP_EXTRA_INDEX_URL
+    # this make command also triggers unit and integration tests
     command: bash -c "make test-differential"
     environment:
       DB_HOST: ${DB_HOST:-test_database}

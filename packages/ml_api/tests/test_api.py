@@ -103,6 +103,7 @@ def test_prediction_validation(field, field_value, index, expected_error, client
     assert data == expected_error
 
 
+@pytest.mark.integration
 def test_prediction_data_saved(client, app):
     # Given
     # Load the test dataset which is included in the model package

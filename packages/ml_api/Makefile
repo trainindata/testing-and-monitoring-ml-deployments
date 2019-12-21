@@ -3,6 +3,9 @@ NAME=ml_api
 VERSION=$(shell git rev-parse HEAD)
 REPO=christophergs
 
+# pytest unit testing options
+PYTEST_UNIT_OPTS = -vv -m "not integration and not differential" tests
+
 # pytest integration testing options
 PYTEST_INTEGRATION_OPTS = -vv -m integration tests
 
@@ -27,7 +30,11 @@ run-service-development:
 	@echo "+ $@"
 	python run.py
 
-test-integration:
+test-unit:
+	@echo "+ $@"
+	PYTHONPATH=. pytest ${PYTEST_UNIT_OPTS}
+
+test-integration: test-unit
 	@echo "+ $@"
 	PYTHONPATH=. pytest ${PYTEST_INTEGRATION_OPTS}
 
