@@ -3,7 +3,10 @@ import pytest
 
 from api.persistence.data_access import PredictionPersistence, ModelType
 
-from api.persistence.models import GradientBoostingModelPredictions, LassoModelPredictions
+from api.persistence.models import (
+    GradientBoostingModelPredictions,
+    LassoModelPredictions,
+)
 
 
 # parameterizationa allows us to try many combinations of data
@@ -12,25 +15,20 @@ from api.persistence.models import GradientBoostingModelPredictions, LassoModelP
 @pytest.mark.parametrize(
     "model_type, model,",
     (
-        (
-            ModelType.GRADIENT_BOOSTING,
-            GradientBoostingModelPredictions
-        ),
-        (
-            ModelType.LASSO,
-            LassoModelPredictions
-        ),
+        (ModelType.GRADIENT_BOOSTING, GradientBoostingModelPredictions),
+        (ModelType.LASSO, LassoModelPredictions),
     ),
 )
-def test_data_access(model_type, model, input_data):
+def test_data_access(model_type, model, test_inputs_df):
     # Given
     # We mock the database session
     mock_session = mock.MagicMock()
     _persistence = PredictionPersistence(db_session=mock_session)
 
     # When
-    _persistence.make_save_predictions(db_model=model_type,
-                                       input_data=input_data.to_dict(orient="records"))
+    _persistence.make_save_predictions(
+        db_model=model_type, input_data=test_inputs_df.to_dict(orient="records")
+    )
 
     # Then
     assert mock_session.commit.call_count == 1

@@ -1,15 +1,13 @@
 import json
 
 import pytest
-from gradient_boosting_model.processing.data_management import load_dataset
 
 from api.persistence.data_access import SECONDARY_VARIABLES_TO_RENAME
 from differential_tests.compare import compare_differences
 
 
 @pytest.mark.differential
-def test_model_prediction_differentials(client):
-    test_inputs_df = load_dataset(file_name="test.csv")
+def test_model_prediction_differentials(client, test_inputs_df):
     secondary_test_inputs_df = test_inputs_df.rename(
         columns=SECONDARY_VARIABLES_TO_RENAME
     )

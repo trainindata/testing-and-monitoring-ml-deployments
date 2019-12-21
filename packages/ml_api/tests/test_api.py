@@ -2,11 +2,12 @@ import json
 
 import numpy as np
 import pytest
-from gradient_boosting_model.processing.data_management import load_dataset
-from sqlalchemy import func
 
 from api.persistence.data_access import SECONDARY_VARIABLES_TO_RENAME
-from api.persistence.models import GradientBoostingModelPredictions, LassoModelPredictions
+from api.persistence.models import (
+    GradientBoostingModelPredictions,
+    LassoModelPredictions,
+)
 
 
 @pytest.mark.integration
@@ -36,10 +37,10 @@ def test_health_endpoint(client):
         ),
     ),
 )
-def test_prediction_endpoint(api_endpoint, expected_no_predictions, client):
+def test_prediction_endpoint(
+    api_endpoint, expected_no_predictions, client, test_inputs_df
+):
     # Given
-    # Load the test dataset which is included in the model package
-    test_inputs_df = load_dataset(file_name="test.csv")  # dataframe
     if api_endpoint == "v1/predictions/secondary":
         # adjust column names to those expected by the secondary model
         test_inputs_df.rename(columns=SECONDARY_VARIABLES_TO_RENAME, inplace=True)
@@ -82,11 +83,10 @@ def test_prediction_endpoint(api_endpoint, expected_no_predictions, client):
     ),
 )
 @pytest.mark.integration
-def test_prediction_validation(field, field_value, index, expected_error, client):
+def test_prediction_validation(
+    field, field_value, index, expected_error, client, test_inputs_df
+):
     # Given
-    # Load the test dataset which is included in the model package
-    test_inputs_df = load_dataset(file_name="test.csv")  # dataframe
-
     # Check gradient_boosting_model.processing.validation import HouseDataInputSchema
     # and you will see the expected values for the inputs to the house price prediction
     # model. In this test, inputs are changed to incorrect values to check the validation.
@@ -104,14 +104,12 @@ def test_prediction_validation(field, field_value, index, expected_error, client
 
 
 @pytest.mark.integration
-def test_prediction_data_saved(client, app):
+def test_prediction_data_saved(client, app, test_inputs_df):
     # Given
-    # Load the test dataset which is included in the model package
-    test_inputs_df = load_dataset(file_name="test.csv")  # dataframe
     gradient_record_count = app.db_session.query(
-        GradientBoostingModelPredictions).count()
-    lasso_record_count = app.db_session.query(
-        LassoModelPredictions).count()
+        GradientBoostingModelPredictions
+    ).count()
+    lasso_record_count = app.db_session.query(LassoModelPredictions).count()
 
     # When
     response = client.post(
@@ -120,7 +118,8 @@ def test_prediction_data_saved(client, app):
 
     # Then
     assert response.status_code == 200
-    assert app.db_session.query(
-        GradientBoostingModelPredictions).count() == gradient_record_count + 1
-    assert app.db_session.query(
-        LassoModelPredictions).count() == lasso_record_count + 1
+    assert (
+        app.db_session.query(GradientBoostingModelPredictions).count()
+        == gradient_record_count + 1
+    )
+    assert app.db_session.query(LassoModelPredictions).count() == lasso_record_count + 1

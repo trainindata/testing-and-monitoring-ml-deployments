@@ -3,7 +3,6 @@
 # testing requirements
 pytest>=5.0.0,<6.0.0
 mock>=3.0.5,<3.1.0
-sqlalchemy-utils>=0.36.0,<0.37.0
 
 # repo maintenance tooling
 black>=19.10b0,<20.0

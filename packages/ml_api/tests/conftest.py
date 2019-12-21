@@ -18,7 +18,7 @@ def _db():
     # alembic can be configured through the configuration file. For testing
     # purposes 'env.py' also checks the 'ALEMBIC_DB_URI' variable first.
     engine = core.create_db_engine_from_config(config=TestingConfig())
-    evars = {'ALEMBIC_DB_URI': db_url}
+    evars = {"ALEMBIC_DB_URI": db_url}
     with mock.patch.dict(os.environ, evars):
         core.run_migrations()
 
@@ -35,8 +35,7 @@ def _db_session(_db):
 
 @pytest.fixture
 def app(_db_session):
-    app = create_app(
-        config_object=TestingConfig(), db_session=_db_session).app
+    app = create_app(config_object=TestingConfig(), db_session=_db_session).app
     with app.app_context():
         yield app
 
@@ -47,8 +46,8 @@ def client(app):
         yield client  # Has to be yielded to access session cookies
 
 
-@pytest.fixture(scope='session')
-def input_data():
+@pytest.fixture
+def test_inputs_df():
     # Load the gradient boosting test dataset which
     # is included in the model package
     test_inputs_df = load_dataset(file_name="test.csv")

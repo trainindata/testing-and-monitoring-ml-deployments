@@ -58,7 +58,8 @@ class PredictionPersistence:
             # compatibility with the regression model package.
             secondary_frame = pd.DataFrame(input_data)
             input_data = secondary_frame.rename(
-                columns=SECONDARY_VARIABLES_TO_RENAME).to_dict(orient='records')
+                columns=SECONDARY_VARIABLES_TO_RENAME
+            ).to_dict(orient="records")
 
         result = MODEL_PREDICTION_MAP[db_model](input_data=input_data)
         errors = None

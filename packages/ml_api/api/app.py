@@ -9,8 +9,9 @@ from api.persistence.core import init_database
 _logger = logging.getLogger(__name__)
 
 
-def create_app(*, config_object: Config, db_session: scoped_session = None
-               ) -> connexion.App:
+def create_app(
+    *, config_object: Config, db_session: scoped_session = None
+) -> connexion.App:
     """Create app instance."""
 
     connexion_app = connexion.App(

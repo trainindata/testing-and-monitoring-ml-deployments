@@ -66,7 +66,8 @@ def run_migrations():
     # directory so we change to the correct directory.
     os.chdir(str(ROOT))
     alembicArgs = [
-        '--raiseerr',
-        'upgrade', 'head',
+        "--raiseerr",
+        "upgrade",
+        "head",
     ]
     alembic.config.main(argv=alembicArgs)
