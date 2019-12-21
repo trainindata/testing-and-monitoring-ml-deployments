@@ -1,4 +1,5 @@
 import json
+import time
 
 import numpy as np
 import pytest
@@ -49,9 +50,7 @@ def test_prediction_endpoint(
         test_inputs_df.rename(columns=SECONDARY_VARIABLES_TO_RENAME, inplace=True)
 
     # When
-    response = client.post(
-        api_endpoint, json=test_inputs_df.to_dict(orient="records")
-    )
+    response = client.post(api_endpoint, json=test_inputs_df.to_dict(orient="records"))
 
     # Then
     assert response.status_code == 200
@@ -84,7 +83,7 @@ def test_prediction_endpoint(
             34,
             {"34": {"CentralAir": ["Field may not be null."]}},
         ),
-        ("LotArea", "", 2, {"2": {"LotArea": ["Not a valid integer."]}},),
+        ("LotArea", "", 2, {"2": {"LotArea": ["Not a valid integer."]}}),
     ),
 )
 @pytest.mark.integration
@@ -111,10 +110,10 @@ def test_prediction_validation(
 @pytest.mark.integration
 def test_prediction_data_saved(client, app, test_inputs_df):
     # Given
-    gradient_record_count = app.db_session.query(
+    initial_gradient_count = app.db_session.query(
         GradientBoostingModelPredictions
     ).count()
-    lasso_record_count = app.db_session.query(LassoModelPredictions).count()
+    initial_lasso_count = app.db_session.query(LassoModelPredictions).count()
 
     # When
     response = client.post(
@@ -124,7 +123,13 @@ def test_prediction_data_saved(client, app, test_inputs_df):
     # Then
     assert response.status_code == 200
     assert (
-        app.db_session.query(GradientBoostingModelPredictions).count()
-        == gradient_record_count + 1
+        app.db_session.query(LassoModelPredictions).count() == initial_lasso_count + 1
     )
-    assert app.db_session.query(LassoModelPredictions).count() == lasso_record_count + 1
+
+    # The gradient prediction save occurs on a separate async thread which can take
+    # time to complete. We pause the test briefly to allow the save operation to finish.
+    time.sleep(2)
+    assert (
+        app.db_session.query(GradientBoostingModelPredictions).count()
+        == initial_gradient_count + 1
+    )
