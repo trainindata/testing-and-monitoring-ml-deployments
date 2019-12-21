@@ -15,9 +15,6 @@ RUN apt-get update -y && \
 
 RUN pip install -r /opt/app/requirements/requirements.txt
 ENV PYTHONPATH "${PYTHONPATH}:/opt/app/"
-COPY Makefile /opt/app/Makefile
-COPY api /opt/app/api
-COPY run.py /opt/app/run.py
-COPY alembic.ini /opt/app/alembic.ini
-COPY alembic /opt/app/alembic
+
+ADD . /opt/app
 WORKDIR /opt/app
