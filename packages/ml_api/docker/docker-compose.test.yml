@@ -17,7 +17,7 @@ services:
       - test_database
     ports:
       - "5000:5000"   # expose webserver to localhost host:container
-    command: bash -c "make test-all"
+    command: bash -c "make db-migrations && make run-service-development"
 
   test_database:
     image: postgres:latest

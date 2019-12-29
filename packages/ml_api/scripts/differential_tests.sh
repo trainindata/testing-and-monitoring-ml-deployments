@@ -14,7 +14,7 @@ make tag-push-local
 
 # should only be run once a model version has been finalized
 # best practice is to run as part of a CI pipeline on merge to master branch.
-# make tag-push-master
+make tag-push-master
 
 ## Pull latest published image
 env TARGET=master docker-compose --file docker/docker-compose.yml pull

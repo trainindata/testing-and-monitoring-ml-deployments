@@ -10,11 +10,10 @@ RUN apt-get update -y && \
  	apt-get install -y make && \
  	apt-get install -y libffi-dev gcc && \
  	# for swagger
- 	apt-get install -y curl && \
- 	# for postgres driver
- 	apt-get install -y libpq-dev
+ 	apt-get install -y curl
 
+ENV PYTHONPATH "${PYTHONPATH}:/opt/app"
 RUN pip install -r /opt/app/requirements/test_requirements.txt
+
 ADD . /opt/app
-ENV PYTHONPATH "${PYTHONPATH}:/opt/app/"
 WORKDIR /opt/app
