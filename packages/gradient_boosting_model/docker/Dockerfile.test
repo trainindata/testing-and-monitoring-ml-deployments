@@ -1,0 +1,22 @@
+FROM python:3.7.5-slim-buster
+
+ARG PIP_EXTRA_INDEX_URL
+RUN mkdir -p /opt/app
+COPY requirements.txt /opt/app/requirements.txt
+COPY test_requirements.txt /opt/app/test_requirements.txt
+RUN pip install --upgrade pip
+RUN pip install -r /opt/app/requirements.txt
+
+# ensure we can run the make commands
+RUN apt-get update -y && \
+ 	apt-get install -y make && \
+ 	apt-get install -y libffi-dev gcc
+
+RUN pip install -r /opt/app/test_requirements.txt
+
+COPY tests /opt/app/tests
+COPY Makefile /opt/app/Makefile
+COPY gradient_boosting_model /opt/app/gradient_boosting_model
+WORKDIR /opt/app
+
+
