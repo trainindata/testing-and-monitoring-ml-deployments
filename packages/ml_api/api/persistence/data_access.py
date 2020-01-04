@@ -41,7 +41,7 @@ MODEL_PREDICTION_MAP = {
 
 
 class PredictionPersistence:
-    def __init__(self, *, db_session: Session, user_id: str = None,) -> None:
+    def __init__(self, *, db_session: Session, user_id: str = None) -> None:
         self.db_session = db_session
         if not user_id:
             # in reality, here we would use something like a UUID for anonymous users
@@ -79,7 +79,7 @@ class PredictionPersistence:
             return prediction_result
 
         self.save_predictions(
-            inputs=input_data, prediction_result=prediction_result, db_model=db_model,
+            inputs=input_data, prediction_result=prediction_result, db_model=db_model
         )
 
         return prediction_result

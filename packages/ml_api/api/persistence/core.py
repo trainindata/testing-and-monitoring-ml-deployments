@@ -40,9 +40,7 @@ def create_db_session(*, engine: Engine) -> scoped_session:
      It represents a “holding zone” for all the objects which you’ve loaded or
      associated with it during its lifespan.
      """
-    return scoped_session(
-        sessionmaker(autocommit=False, autoflush=False, bind=engine,),
-    )
+    return scoped_session(sessionmaker(autocommit=False, autoflush=False, bind=engine))
 
 
 def init_database(app: Flask, config: Config, db_session=None) -> None:
@@ -65,9 +63,5 @@ def run_migrations():
     # alembic looks for the migrations in the current
     # directory so we change to the correct directory.
     os.chdir(str(ROOT))
-    alembicArgs = [
-        "--raiseerr",
-        "upgrade",
-        "head",
-    ]
+    alembicArgs = ["--raiseerr", "upgrade", "head"]
     alembic.config.main(argv=alembicArgs)

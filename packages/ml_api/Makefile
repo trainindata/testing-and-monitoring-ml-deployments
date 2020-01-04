@@ -1,27 +1,22 @@
 # For details on Makefiles, see the section notes.
 NAME=ml_api
 VERSION=$(shell git rev-parse HEAD)
-REPO=christophergs
-
-# pytest unit testing options
-PYTEST_UNIT_OPTS = -vv -m "not integration and not differential" tests
-
-# pytest integration testing options
-PYTEST_INTEGRATION_OPTS = -vv -m integration tests
-
-# pytest differential testing options
-PYTEST_DIFFERENTIAL_OPTS = -vv -m differential tests
+REPO=UPDATEME
+PASSWORD=UPDATEME
 
 # Specify phony list to ensure make recipes do not conflict with real file names
-.PHONY: run-service-local test-integration tag-push-master tag-push-local db-migrations
+.PHONY: run-service-development tag-push-master tag-push-local db-migrations
+
 
 tag-push-local:
 	@echo "+ $@"
+	docker login --username $(REPO) --password $(PASSWORD)
 	env TARGET=$(VERSION) docker-compose -f docker/docker-compose-ci-candidate.yml build --build-arg PIP_EXTRA_INDEX_URL=${PIP_EXTRA_INDEX_URL}
 	docker push $(REPO)/$(NAME):$(VERSION)
 
 tag-push-master:
 	@echo "+ $@"
+	docker login --username $(REPO) --password $(PASSWORD)
 	env TARGET=master docker-compose -f docker/docker-compose-ci-master.yml build --build-arg PIP_EXTRA_INDEX_URL=${PIP_EXTRA_INDEX_URL}
 	docker push $(REPO)/$(NAME):master
 
@@ -29,21 +24,6 @@ tag-push-master:
 run-service-development:
 	@echo "+ $@"
 	python run.py
-
-test-unit:
-	@echo "+ $@"
-	PYTHONPATH=. pytest ${PYTEST_UNIT_OPTS}
-
-test-integration:
-	@echo "+ $@"
-	PYTHONPATH=. pytest ${PYTEST_INTEGRATION_OPTS}
-
-test-differential:
-	@echo "+ $@"
-	PYTHONPATH=. pytest ${PYTEST_DIFFERENTIAL_OPTS}
-
-test-all: test-unit test-integration test-differential
-	@echo "+ $@"
 
 db-migrations:
 	@echo "+ $@"
