@@ -1,22 +1,30 @@
-from flask import request
+from flask import request, Flask
+from flask.wrappers import Response
 from prometheus_client import Counter, Histogram
 import time
 
 
+# Counter and Histogram are examples of default metrics
+# available from the prometheus Python client.
 REQUEST_COUNT = Counter(
-    'http_request_count', 'App Request Count',
-    ['app_name', 'method', 'endpoint', 'http_status']
+    name='http_request_count',
+    documentation='App Request Count',
+    labelnames=['app_name', 'method', 'endpoint', 'http_status']
 )
-REQUEST_LATENCY = Histogram('http_request_latency_seconds', 'Request latency',
-    ['app_name', 'endpoint']
+REQUEST_LATENCY = Histogram(
+    name='http_request_latency_seconds',
+    documentation='Request latency',
+    labelnames=['app_name', 'endpoint']
 )
 
 
-def start_timer():
+def start_timer() -> None:
+    """Get start time of a request."""
     request._prometheus_metrics_request_start_time = time.time()
 
 
-def stop_timer(response):
+def stop_timer(response: Response) -> Response:
+    """Get stop time of a request.."""
     request_latency = time.time() - request._prometheus_metrics_request_start_time
     REQUEST_LATENCY.labels(
         app_name='webapp',
@@ -24,7 +32,12 @@ def stop_timer(response):
     return response
 
 
-def record_request_data(response):
+def record_request_data(response: Response) -> Response:
+    """Capture request data.
+
+    Uses the flask request object to extract information such as
+    the HTTP request method, endpoint and HTTP status.
+    """
     REQUEST_COUNT.labels(
         app_name='webapp',
         method=request.method,
@@ -33,9 +46,13 @@ def record_request_data(response):
     return response
 
 
-def setup_metrics(app):
+def setup_metrics(app: Flask) -> None:
+    """Setup Prometheus metrics.
+
+    This function uses the flask before_request
+    and after_request hooks to capture metrics
+    with each HTTP request to the application.
+    """
     app.before_request(start_timer)
-    # The order here matters since we want stop_timer
-    # to be executed first
     app.after_request(record_request_data)
     app.after_request(stop_timer)
