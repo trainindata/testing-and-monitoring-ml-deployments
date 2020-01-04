@@ -1,0 +1,4 @@
+Flask>=1.1.1,<1.2.0
+prometheus_client>=0.7.1,<0.8.0
+gunicorn>=20.0.4,<20.1.0
+
