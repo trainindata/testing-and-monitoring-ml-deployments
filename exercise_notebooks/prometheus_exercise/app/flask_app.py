@@ -9,7 +9,11 @@ def index():
 
 
 def foo():
-    return 'foo'
+    foo = 1
+    for x in range(100000):
+        foo += x
+
+    return str(foo)
 
 
 def create_app():
