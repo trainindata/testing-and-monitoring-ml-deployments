@@ -14,4 +14,4 @@ COPY . /application
 
 EXPOSE 5000
 VOLUME /application
-CMD uwsgi --ini uwsgi.ini
+CMD gunicorn --workers=1 --bind 0.0.0.0:5000 application:application

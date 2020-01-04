@@ -12,11 +12,11 @@ REQUEST_LATENCY = Histogram('request_latency_seconds', 'Request latency',
 )
 
 def start_timer():
-    request.start_time = time.time()
+    request._prometheus_metrics_request_start_time = time.time()
 
 def stop_timer(response):
-    resp_time = time.time() - request.start_time
-    REQUEST_LATENCY.labels('webapp', request.path).observe(resp_time)
+    request_latency = time.time() - request._prometheus_metrics_request_start_time
+    REQUEST_LATENCY.labels('webapp', request.path).observe(request_latency)
     return response
 
 def record_request_data(response):

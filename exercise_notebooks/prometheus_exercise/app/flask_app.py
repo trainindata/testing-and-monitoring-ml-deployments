@@ -9,12 +9,12 @@ def index():
 
 
 def create_app():
-    app = Flask(__name__)
-    app.add_url_rule('/', 'index', index)
-    setup_metrics(app)
+    main_app = Flask(__name__)
+    main_app.add_url_rule('/', 'index', index)
+    setup_metrics(main_app)
 
     # Add prometheus wsgi middleware to route /metrics requests
-    app = DispatcherMiddleware(app, {
+    app = DispatcherMiddleware(main_app.wsgi_app, {
         '/metrics': prometheus_client.make_wsgi_app()
     })
 
