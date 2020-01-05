@@ -32,3 +32,11 @@ scrape_configs:
     # scheme defaults to 'http'.
     static_configs:
         - targets: ['webapp:5000']
+
+  - job_name: 'cadvisor'
+
+    # Override the global default and scrape targets from this job every 5 seconds.
+    scrape_interval: 5s
+
+    static_configs:
+      - targets: ['cadvisor:8080']
