@@ -14,6 +14,8 @@ FORMATTER = logging.Formatter(
 # Project Directories
 ROOT = pathlib.Path(api.__file__).resolve().parent.parent
 
+APP_NAME = 'ml_api'
+
 
 class Config:
     DEBUG = False
