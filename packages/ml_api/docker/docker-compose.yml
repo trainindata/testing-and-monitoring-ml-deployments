@@ -12,9 +12,10 @@ services:
       DB_NAME: ml_api_dev
     depends_on:
       - database
+      - cadvisor
     ports:
       - "5000:5000"   # expose webserver to localhost host:container
-    command: bash -c "make db-migrations && make run-service-development"
+    command: bash -c "make db-migrations && make run-service-wsgi"
 
   database:
     image: postgres:latest
@@ -28,5 +29,44 @@ services:
     volumes:
       - my_dbdata:/var/lib/postgresql/data
 
+  prometheus:
+    image: prom/prometheus
+    container_name: prometheus
+    volumes:
+      - ./config/prometheus/:/etc/prometheus/
+      - prometheus_data:/prometheus
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+    expose:
+      - 9090
+    ports:
+      - 9090:9090
+    depends_on:
+      - cadvisor
+
+  grafana:
+    image: grafana/grafana
+    depends_on:
+      - prometheus
+    ports:
+      - 3000:3000
+    volumes:
+      - grafana_data:/var/lib/grafana
+    environment:
+      - GF_SECURITY_ADMIN_PASSWORD=foobar
+      - GF_USERS_ALLOW_SIGN_UP=false
+
+  cadvisor:
+    image: google/cadvisor
+    volumes:
+      - /:/rootfs:ro
+      - /var/run:/var/run:rw
+      - /sys:/sys:ro
+      - /var/lib/docker/:/var/lib/docker:ro
+    ports:
+      - 8080:8080
+
 volumes:
-  my_dbdata:
+  my_dbdata: {}
+  prometheus_data: {}
+  grafana_data: {}
