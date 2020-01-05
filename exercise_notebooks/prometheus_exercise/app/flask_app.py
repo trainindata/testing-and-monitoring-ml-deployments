@@ -9,15 +9,18 @@ def index():
 
 
 def cpu():
-    foo = 1
-    for i in range(10000000):
-        i*i
+    # For older machines, you may want to lower
+    # this range to prevent timeouts.
+    for i in range(10000):
+        i**i
 
     return 'cpu intensive operation complete'
 
 
 def memory():
     d = {}
+    # For older machines, you may want to lower
+    # this range to prevent timeouts.
     for i in range(10000000):
         i = str(i)
         i += "xyz"
