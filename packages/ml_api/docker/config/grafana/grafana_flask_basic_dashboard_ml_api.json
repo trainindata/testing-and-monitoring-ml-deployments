@@ -15,7 +15,7 @@
   "editable": true,
   "gnetId": null,
   "graphTooltip": 0,
-  "id": 2,
+  "id": 3,
   "links": [],
   "panels": [
     {
@@ -59,7 +59,7 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "rate(http_request_count_total{job=\"ml_api\"}[1m])",
+          "expr": "rate(http_request_count_total{job=\"ml_api\"}[5m])",
           "legendFormat": "{{app_name}} {{method}} {{endpoint}} {{http_status}}",
           "refId": "A"
         }
@@ -149,11 +149,6 @@
           "expr": "sum (rate(http_request_latency_seconds_sum{job=\"ml_api\"}[5m])) / sum (rate(http_request_latency_seconds_count{job=\"ml_api\"}[5m]))",
           "legendFormat": "Average (seconds)",
           "refId": "A"
-        },
-        {
-          "expr": "rate(http_request_latency_seconds_sum{job=\"ml_api\"}[5m]) / rate(http_request_latency_seconds_count{job=\"ml_api\"}[5m])",
-          "legendFormat": "{{endpoint}} (seconds)",
-          "refId": "B"
         }
       ],
       "thresholds": [],
@@ -205,7 +200,7 @@
     "list": []
   },
   "time": {
-    "from": "now-5m",
+    "from": "now-1h",
     "to": "now"
   },
   "timepicker": {
@@ -224,6 +219,6 @@
   },
   "timezone": "",
   "title": "Really Simple Flask Dashboard",
-  "uid": "q8vgEpLZk",
-  "version": 6
+  "uid": "q8vgEpLZl",
+  "version": 3
 }
