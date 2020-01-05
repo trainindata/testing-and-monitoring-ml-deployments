@@ -26,6 +26,8 @@ services:
       - 9090
     ports:
       - 9090:9090
+    depends_on:
+      - cadvisor
   grafana:
     image: grafana/grafana
     depends_on:
@@ -37,3 +39,13 @@ services:
     environment:
       - GF_SECURITY_ADMIN_PASSWORD=foobar
       - GF_USERS_ALLOW_SIGN_UP=false
+
+  cadvisor:
+    image: google/cadvisor
+    volumes:
+      - /:/rootfs:ro
+      - /var/run:/var/run:rw
+      - /sys:/sys:ro
+      - /var/lib/docker/:/var/lib/docker:ro
+    ports:
+      - 8080:8080
