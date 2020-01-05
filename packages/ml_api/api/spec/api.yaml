@@ -18,7 +18,6 @@ paths:
       responses:
         '200':
           description: API Health Status
-
   /v1/predictions/primary:
     post:
       operationId: api.controller.predict
