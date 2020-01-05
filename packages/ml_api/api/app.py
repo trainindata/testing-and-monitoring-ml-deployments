@@ -25,7 +25,7 @@ def create_app(
     init_database(flask_app, config=config_object, db_session=db_session)
 
     # Setup prometheus monitoring
-    setup_metrics(flask_app, )
+    setup_metrics(flask_app)
 
     connexion_app.add_api("api.yaml")
     _logger.info("Application instance created")
