@@ -1,5 +1,6 @@
 Flask>=1.1.1,<1.2.0
 python3-logstash
 json-logging-py
+python-json-logger>=0.1.11,<0.2.0
 gunicorn>=20.0.4,<20.1.0
 

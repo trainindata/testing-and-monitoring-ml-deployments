@@ -1,6 +1,8 @@
 import logging
 
 from flask import Flask
+from pythonjsonlogger import jsonlogger
+
 
 logging.basicConfig(filename="logFile.txt",
                     filemode='a',
@@ -9,9 +11,15 @@ logging.basicConfig(filename="logFile.txt",
 
 _logger = logging.getLogger(__name__)
 
+# logHandler = logging.StreamHandler()
+# formatter = jsonlogger.JsonFormatter()
+# logHandler.setFormatter(formatter)
+# _logger.addHandler(logHandler)
+
 
 def index():
-    _logger.warning('index')
+    _logger.warning('home')
+    _logger.info('hello')
     return 'home'
 
 
