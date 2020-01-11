@@ -20,6 +20,10 @@ services:
       - logstash
     networks:
       - elk
+    depends_on:
+      - logstash
+      - kibana
+      - elasticsearch
     volumes:
       - ./:/application
   elasticsearch:

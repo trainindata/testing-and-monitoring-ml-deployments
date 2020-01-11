@@ -14,4 +14,11 @@ COPY . /application
 
 EXPOSE 5000
 VOLUME /application
-CMD gunicorn --workers=1 --bind 0.0.0.0:5000 application:application --log-config gunicorn_logging.conf
+CMD gunicorn --bind 0.0.0.0:5000 \
+             --workers=1 \
+             --log-config gunicorn_logging.conf \
+             --log-level=info \
+             --access-logfile=- \
+             --error-logfile=- \
+             --access-logformat 'ACCESS "%(message)s" "%(r)s" "%(s)s" %(L)s' \
+             application:application

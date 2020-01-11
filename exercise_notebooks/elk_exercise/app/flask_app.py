@@ -2,23 +2,15 @@ import logging
 
 from flask import Flask
 from pythonjsonlogger import jsonlogger
+from logstash_async.handler import AsynchronousLogstashHandler
+from logstash_async.handler import LogstashFormatter
+import json
 
 
-logging.basicConfig(filename="logFile.txt",
-                    filemode='a',
-                    format='%(asctime)s %(levelname)s-%(message)s',
-                    datefmt='%Y-%m-%d %H:%M:%S')
-
-_logger = logging.getLogger(__name__)
-
-# logHandler = logging.StreamHandler()
-# formatter = jsonlogger.JsonFormatter()
-# logHandler.setFormatter(formatter)
-# _logger.addHandler(logHandler)
-
+_logger = logging.getLogger('logstash')
 
 def index():
-    _logger.warning('home')
+    _logger.warning(json.dumps({'home': 'here'}))
     _logger.info('hello')
     return 'home'
 
