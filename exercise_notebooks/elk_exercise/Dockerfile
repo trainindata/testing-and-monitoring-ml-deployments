@@ -17,8 +17,7 @@ VOLUME /application
 CMD gunicorn --bind 0.0.0.0:5000 \
              --workers=1 \
              --log-config gunicorn_logging.conf \
-             --log-level=info \
+             --log-level=DEBUG \
              --access-logfile=- \
              --error-logfile=- \
-             --access-logformat 'ACCESS "%(message)s" "%(r)s" "%(s)s" %(L)s' \
              application:application

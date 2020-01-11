@@ -1,17 +1,13 @@
 import logging
 
 from flask import Flask
-from pythonjsonlogger import jsonlogger
-from logstash_async.handler import AsynchronousLogstashHandler
-from logstash_async.handler import LogstashFormatter
-import json
 
+gunicorn_error_logger = logging.getLogger('gunicorn.error')
+gunicorn_error_logger.setLevel(logging.DEBUG)
 
-_logger = logging.getLogger('logstash')
 
 def index():
-    _logger.warning(json.dumps({'home': 'here'}))
-    _logger.info('hello')
+    gunicorn_error_logger.info('hello')
     return 'home'
 
 
