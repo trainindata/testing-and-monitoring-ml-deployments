@@ -7,11 +7,10 @@ from gradient_boosting_model.predict import make_prediction as make_secondary_pr
 
 from api.persistence.data_access import PredictionPersistence, ModelType
 
-_logger = logging.getLogger(__name__)
-
 
 def health():
     if request.method == "GET":
+        current_app.logger.info('health endpoint')
         return jsonify({"status": "ok"})
 
 
@@ -26,12 +25,13 @@ def predict():
             db_model=ModelType.LASSO, input_data=json_data
         )
 
+        current_app.logger.debug(f'PREDICTION: '
+                                 f'model version: {result.model_version} '
+                                 f'Inputs: {json_data} '
+                                 f'Predictions: {result.predictions}')
+
         # Step 2b: Get and save shadow predictions asynchronously
         if current_app.config.get("SHADOW_MODE_ACTIVE"):
-            _logger.debug(
-                f"Calling shadow model asynchronously: "
-                f"{ModelType.GRADIENT_BOOSTING.value}"
-            )
             thread = threading.Thread(
                 target=persistence.make_save_predictions,
                 kwargs={
@@ -43,7 +43,6 @@ def predict():
 
         # Step 3: Handle errors
         if result.errors:
-            _logger.warning(f"errors during prediction: {result.errors}")
             return Response(json.dumps(result.errors), status=400)
 
         # Step 4: Prepare prediction response

@@ -3,6 +3,8 @@ import os
 import pathlib
 import sys
 
+from flask import Flask
+
 import api
 
 
@@ -80,13 +82,12 @@ def get_console_handler():
     return console_handler
 
 
-def setup_app_logging(config: Config) -> None:
+def setup_app_logging(config: Config, app: Flask) -> None:
     """Prepare custom logging for our application."""
+    gunicorn_error_logger = logging.getLogger('gunicorn.error')
+    app.logger.handlers.extend(gunicorn_error_logger.handlers)
+    app.logger.setLevel(config.LOGGING_LEVEL)
     _disable_irrelevant_loggers()
-    root = logging.getLogger()
-    root.setLevel(config.LOGGING_LEVEL)
-    root.addHandler(get_console_handler())
-    root.propagate = False
 
 
 def _disable_irrelevant_loggers() -> None:

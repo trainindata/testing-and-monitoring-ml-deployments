@@ -8,6 +8,7 @@ import pandas as pd
 from gradient_boosting_model.predict import make_prediction
 from regression_model.predict import make_prediction as make_shadow_prediction
 from sqlalchemy.orm.session import Session
+from flask import current_app
 
 from api.persistence.models import (
     LassoModelPredictions,
