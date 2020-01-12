@@ -4,11 +4,43 @@ import threading
 
 from flask import request, jsonify, Response, current_app
 
+from gradient_boosting_model import __version__ as shadow_version
+from regression_model import __version__ as live_version
+from prometheus_client import Histogram, Gauge, Info
 from gradient_boosting_model.predict import make_prediction
 from api.persistence.data_access import PredictionPersistence, ModelType
+from api.config import APP_NAME
 
 
 _logger = logging.getLogger(__name__)
+
+PREDICTION_TRACKER = Histogram(
+    name='house_price_prediction_dollars',
+    documentation='ML Model Prediction on House Price',
+    labelnames=['app_name', 'model_name', 'model_version']
+)
+
+PREDICTION_GAUGE = Gauge(
+    name='house_price_gauge_dollars',
+    documentation='ML Model Prediction on House Price for min max calcs',
+    labelnames=['app_name', 'model_name', 'model_version']
+)
+
+PREDICTION_GAUGE.labels(
+                app_name=APP_NAME,
+                model_name=ModelType.LASSO.name,
+                model_version=live_version)
+
+MODEL_VERSIONS = Info(
+    'model_version_details',
+    'Capture model version information',
+)
+
+MODEL_VERSIONS.info({
+    'live_model': ModelType.LASSO.name,
+    'live_version': live_version,
+    'shadow_model': ModelType.GRADIENT_BOOSTING.name,
+    'shadow_version': shadow_version})
 
 
 def health():
@@ -47,7 +79,18 @@ def predict():
             _logger.warning(f"errors during prediction: {result.errors}")
             return Response(json.dumps(result.errors), status=400)
 
-        # Step 4: Prepare prediction response
+        # Step 4: Monitoring
+        for _prediction in result.predictions:
+            PREDICTION_TRACKER.labels(
+                app_name=APP_NAME,
+                model_name=ModelType.LASSO.name,
+                model_version=live_version).observe(_prediction)
+            PREDICTION_GAUGE.labels(
+                app_name=APP_NAME,
+                model_name=ModelType.LASSO.name,
+                model_version=live_version).set(_prediction)
+
+        # Step 5: Prepare prediction response
         return jsonify(
             {
                 "predictions": result.predictions,
