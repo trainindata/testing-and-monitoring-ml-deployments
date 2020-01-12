@@ -16,7 +16,7 @@
   "editable": true,
   "gnetId": null,
   "graphTooltip": 0,
-  "id": 5,
+  "id": 7,
   "links": [],
   "panels": [
     {
@@ -37,8 +37,8 @@
       "pluginVersion": "6.5.2",
       "showHeader": true,
       "sort": {
-        "col": 0,
-        "desc": true
+        "col": null,
+        "desc": false
       },
       "styles": [
         {
@@ -86,7 +86,7 @@
       "fill": 1,
       "fillGradient": 0,
       "gridPos": {
-        "h": 6,
+        "h": 5,
         "w": 12,
         "x": 0,
         "y": 4
@@ -173,7 +173,7 @@
       "fill": 1,
       "fillGradient": 0,
       "gridPos": {
-        "h": 6,
+        "h": 5,
         "w": 12,
         "x": 12,
         "y": 4
@@ -205,7 +205,7 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "sum (rate(house_price_prediction_dollars_sum{job=\"ml_api\"}[5m])) / sum (rate(house_price_prediction_dollars_count{job=\"ml_api\"}[5m]))",
+          "expr": "rate(house_price_prediction_dollars_count{job=\"ml_api\"}[1m])",
           "legendFormat": "Average Prediction Amount ($)",
           "refId": "A"
         }
@@ -214,7 +214,7 @@
       "timeFrom": null,
       "timeRegions": [],
       "timeShift": null,
-      "title": "Average House Price Prediction Amount (USD)",
+      "title": "Average House Price Prediction Rate (/second)",
       "tooltip": {
         "shared": true,
         "sort": 0,
@@ -260,10 +260,10 @@
       "fill": 1,
       "fillGradient": 0,
       "gridPos": {
-        "h": 6,
+        "h": 5,
         "w": 12,
         "x": 0,
-        "y": 10
+        "y": 9
       },
       "hiddenSeries": false,
       "id": 6,
@@ -292,16 +292,26 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "sum (rate(house_price_prediction_dollars_sum{job=\"ml_api\"}[1h])) / sum (rate(house_price_prediction_dollars_count{job=\"ml_api\"}[1h])) \n- (sum (rate(house_price_prediction_dollars_sum{job=\"ml_api\"}[5m] offset 1h)) / sum(rate(house_price_prediction_dollars_count{job=\"ml_api\"}[5m] offset 1h)))",
-          "legendFormat": "Average Prediction Rate / second",
+          "expr": "avg_over_time(house_price_gauge_dollars[1h])",
+          "legendFormat": "AVG",
           "refId": "A"
+        },
+        {
+          "expr": "stddev_over_time(house_price_gauge_dollars[1h])",
+          "legendFormat": "STD",
+          "refId": "B"
+        },
+        {
+          "expr": "stddev_over_time(house_price_gauge_dollars[1h]) / (sqrt(count_over_time(house_price_prediction_dollars_count[1h])))",
+          "legendFormat": "SEM",
+          "refId": "C"
         }
       ],
       "thresholds": [],
       "timeFrom": null,
       "timeRegions": [],
       "timeShift": null,
-      "title": "Average Prediction Delta (Drift?)",
+      "title": "Standard Error of the Mean (SEM)",
       "tooltip": {
         "shared": true,
         "sort": 0,
@@ -347,10 +357,10 @@
       "fill": 1,
       "fillGradient": 0,
       "gridPos": {
-        "h": 6,
+        "h": 5,
         "w": 12,
         "x": 12,
-        "y": 10
+        "y": 9
       },
       "hiddenSeries": false,
       "id": 10,
@@ -379,8 +389,8 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "sum (rate(house_price_prediction_dollars_sum{job=\"ml_api\"}[1h])) / sum (rate(house_price_prediction_dollars_count{job=\"ml_api\"}[1h])) \n- (sum (rate(house_price_prediction_dollars_sum{job=\"ml_api\"}[5m] offset 1h)) / sum(rate(house_price_prediction_dollars_count{job=\"ml_api\"}[5m] offset 1h)))",
-          "legendFormat": "Average Prediction Rate / second",
+          "expr": "(avg_over_time(house_price_gauge_dollars[1m])  - avg_over_time(house_price_gauge_dollars[1w])) /  (stddev_over_time(house_price_gauge_dollars[1w]))",
+          "legendFormat": "Z-Score",
           "refId": "A"
         }
       ],
@@ -388,7 +398,7 @@
       "timeFrom": null,
       "timeRegions": [],
       "timeShift": null,
-      "title": "Average Prediction Delta (Drift?)",
+      "title": "Standard Score (Z-Score)",
       "tooltip": {
         "shared": true,
         "sort": 0,
@@ -428,16 +438,16 @@
     {
       "datasource": "Prometheus",
       "gridPos": {
-        "h": 5,
+        "h": 4,
         "w": 12,
         "x": 0,
-        "y": 16
+        "y": 14
       },
       "id": 5,
       "options": {
         "fieldOptions": {
           "calcs": [
-            "min"
+            "logmin"
           ],
           "defaults": {
             "decimals": 2,
@@ -479,10 +489,10 @@
     {
       "datasource": "Prometheus",
       "gridPos": {
-        "h": 5,
+        "h": 4,
         "w": 12,
         "x": 12,
-        "y": 16
+        "y": 14
       },
       "id": 8,
       "options": {
@@ -535,7 +545,7 @@
     "list": []
   },
   "time": {
-    "from": "now-3h",
+    "from": "now-1h",
     "to": "now"
   },
   "timepicker": {
@@ -555,5 +565,5 @@
   "timezone": "",
   "title": "ML API Dashboard",
   "uid": "q8vgEpLZk",
-  "version": 6
+  "version": 19
 }
