@@ -46,6 +46,18 @@ jobs:
   test_ml_api_py36:
     docker:
       - image: circleci/python:3.6.9
+      - image: postgres
+        environment:
+          POSTGRES_USER: test_user
+          POSTGRES_PASSWORD: password
+          POSTGRES_DB: ml_api_test
+    environment:
+      DB_HOST: test_database
+      DB_PORT: 5432
+      DB_USER: test_user
+      DB_PASSWORD: ${DB_PASSWORD:-password}
+      DB_NAME: ml_api_test
+      SHADOW_MODE_ACTIVE: true
     working_directory: ~/project/packages/ml_api
     steps:
       - checkout:
