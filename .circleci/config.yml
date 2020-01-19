@@ -52,7 +52,7 @@ jobs:
           POSTGRES_PASSWORD: password
           POSTGRES_DB: ml_api_test
     environment:
-      DB_HOST: test_database
+      DB_HOST: postgres
       DB_PORT: 5432
       DB_USER: test_user
       DB_PASSWORD: ${DB_PASSWORD:-password}
