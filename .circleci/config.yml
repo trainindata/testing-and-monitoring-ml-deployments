@@ -52,10 +52,10 @@ jobs:
           POSTGRES_PASSWORD: password
           POSTGRES_DB: ml_api_test
     environment:
-      DB_HOST: postgres
+      DB_HOST: localhost
       DB_PORT: 5432
       DB_USER: test_user
-      DB_PASSWORD: ${DB_PASSWORD:-password}
+      DB_PASSWORD: password
       DB_NAME: ml_api_test
       SHADOW_MODE_ACTIVE: true
     working_directory: ~/project/packages/ml_api
