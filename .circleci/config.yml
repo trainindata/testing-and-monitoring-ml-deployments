@@ -73,10 +73,10 @@ jobs:
     docker:
       - image: circleci/python:3.7.6
       - image: postgres
-          environment:
-            POSTGRES_USER: test_user
-            POSTGRES_PASSWORD: password
-            POSTGRES_DB: ml_api_test
+        environment:
+          POSTGRES_USER: test_user
+          POSTGRES_PASSWORD: password
+          POSTGRES_DB: ml_api_test
     environment:
       DB_HOST: localhost
       DB_PORT: 5432
@@ -99,10 +99,10 @@ jobs:
     docker:
       - image: circleci/python:3.8.1
       - image: postgres
-          environment:
-            POSTGRES_USER: test_user
-            POSTGRES_PASSWORD: password
-            POSTGRES_DB: ml_api_test
+        environment:
+          POSTGRES_USER: test_user
+          POSTGRES_PASSWORD: password
+          POSTGRES_DB: ml_api_test
     environment:
       DB_HOST: localhost
       DB_PORT: 5432
