@@ -3,17 +3,17 @@
 
 import io
 import os
+from pathlib import Path
 
 from setuptools import find_packages, setup
-from gradient_boosting_model.config.core import config, PACKAGE_ROOT
 
 
 # Package meta-data.
-NAME = config.app_config.package_name
-DESCRIPTION = "Train and deploy gradient boosting regression model."
-URL = "your github project"
-EMAIL = "your_email@email.com"
-AUTHOR = "Your name"
+NAME = 'tid-gradient-boosting-model'
+DESCRIPTION = "Gradient boosting regression model."
+URL = "https://github.com/trainindata/testing-and-monitoring-ml-deployments/tree/master/packages"
+EMAIL = "christopher.samiullah@protonmail.com"
+AUTHOR = "ChristopherGS"
 REQUIRES_PYTHON = ">=3.6.0"
 
 
@@ -42,7 +42,9 @@ except FileNotFoundError:
 
 # Load the package's __version__.py module as a dictionary.
 about = {}
-with open(PACKAGE_ROOT / "VERSION") as f:
+ROOT_DIR = Path(__file__).resolve().parent
+PACKAGE_DIR = ROOT_DIR / 'gradient_boosting_model'
+with open(PACKAGE_DIR / "VERSION") as f:
     _version = f.read().strip()
     about["__version__"] = _version
 
