@@ -4,6 +4,7 @@ jobs:
   test_32_bit_architecture: # name of your job
     machine: # executor type
       enabled: true
+      image: ubuntu-1604:201903-01
     working_directory: ~/project/packages/ml_api
     steps:
       - checkout:
@@ -13,6 +14,7 @@ jobs:
           command: |
             wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | sudo apt-key add -
             sudo apt-get update
+            sudo apt-get install ia32-libs
             sudo apt-get install python3.7:i386
             sudo pip install --upgrade pip
             pip install --user tox
