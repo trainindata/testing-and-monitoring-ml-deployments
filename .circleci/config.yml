@@ -3,17 +3,18 @@ version: 2.1
 jobs:
   test_32_bit_architecture: # name of your job
     machine: # executor type
+      enabled: true
       image: i386/ubuntu  # 32-bit
-      working_directory: ~/project/packages/ml_api
-      steps:
-        - checkout:
-          path: ~/project
-        - run:
-            name: Run API tests with Python 3.7
-            command: |
-              sudo pip install --upgrade pip
-              pip install --user tox
-              tox -e py37
+    working_directory: ~/project/packages/ml_api
+    steps:
+      - checkout:
+        path: ~/project
+      - run:
+          name: Run API tests with Python 3.7
+          command: |
+            sudo pip install --upgrade pip
+            pip install --user tox
+            tox -e py37
   test_gradient_model_py36:
     docker:
       - image: circleci/python:3.6.9
