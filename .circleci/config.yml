@@ -14,7 +14,7 @@ jobs:
           command: |
             wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | sudo apt-key add -
             sudo apt-get update
-            sudo apt-get install python3.7:i386
+            sudo apt-get install python3.7
             sudo pip install --upgrade pip
             pip install --user tox
             tox -e py37
