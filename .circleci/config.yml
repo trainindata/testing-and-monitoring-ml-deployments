@@ -8,7 +8,7 @@ jobs:
     working_directory: ~/project/packages/ml_api
     steps:
       - checkout:
-        path: ~/project
+          path: ~/project
       - run:
           name: Run API tests with Python 3.7
           command: |
