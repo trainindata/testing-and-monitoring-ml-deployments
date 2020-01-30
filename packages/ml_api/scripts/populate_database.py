@@ -9,7 +9,7 @@ import requests
 from gradient_boosting_model.config.core import config
 from gradient_boosting_model.processing.data_management import load_dataset
 
-LOCAL_URL = f'http://{os.environ["DB_HOST"]}:5000'
+LOCAL_URL = f'http://{os.getenv("DB_HOST", "localhost")}:5000'
 
 HEADERS = {"Accept": "application/json", "Content-Type": "application/json"}
 
@@ -81,7 +81,7 @@ def populate_database(n_predictions: int = 500, anomaly: bool = False) -> None:
             break
 
         response = requests.post(
-            f"{LOCAL_URL}/v1/predictions/primary",
+            f"{LOCAL_URL}/v1/predictions/regression",
             headers=HEADERS,
             json=[data.to_dict()],
         )

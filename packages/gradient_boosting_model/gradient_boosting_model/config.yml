@@ -1,5 +1,5 @@
 # Package Overview
-package_name: tid_gradient_boosting_model
+package_name: gradient_boosting_model
 
 # Data Files
 training_data_file: houseprice.csv

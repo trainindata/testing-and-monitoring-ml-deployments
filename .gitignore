@@ -115,6 +115,8 @@ logs/
 
 # training data
 packages/gradient_boosting_model/gradient_boosting_model/datasets/*.csv
+packages/gradient_boosting_model/gradient_boosting_model/datasets/*.txt
+packages/gradient_boosting_model/gradient_boosting_model/datasets/*.zip
 
 # trained models
 packages/gradient_boosting_model/gradient_boosting_model/trained_models/*.pkl

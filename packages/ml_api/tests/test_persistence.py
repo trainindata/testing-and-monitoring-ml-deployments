@@ -1,4 +1,4 @@
-import mock
+from unittest import mock
 import pytest
 
 from api.persistence.data_access import PredictionPersistence, ModelType

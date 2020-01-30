@@ -1,12 +1,17 @@
 # ML Model
-tid-gradient-boosting-model==0.1.5
+tid-gradient-boosting-model>=0.1.18,<0.2.0
 
 # Old model
-tid-regression-model==2.0.20
+tid-regression-model>=2.0.20,<2.1.0
 
 # Web microframework for the API
 flask>=1.1.1,<1.2.0
-connexion[swagger-ui]>=2.4.0,<2.5.0
+connexion[swagger-ui]>=2.5.1,<2.6.0
+
+# repo maintenance tooling
+black>=19.10b0,<20.0
+flake8>=3.7.9,<4.0
+mypy>=0.740
 
 # Persistence
 sqlalchemy>=1.3.11,<1.4.0  # ORM
@@ -19,5 +24,3 @@ prometheus_client>=0.7.1,<0.8.0
 
 # Deployment
 gunicorn>=20.0.4,<20.1.0
-
-

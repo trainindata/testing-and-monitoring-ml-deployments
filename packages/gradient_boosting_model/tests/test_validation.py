@@ -6,6 +6,8 @@ def test_validate_inputs(sample_input_data):
     validated_inputs, errors = validate_inputs(input_data=sample_input_data)
 
     # Then
+    assert not errors
+
     # we expect that 2 rows are removed due to missing vars
     # 1459 is the total number of rows in the test data set (test.csv)
     # and 1457 number returned after 2 rows are filtered out.

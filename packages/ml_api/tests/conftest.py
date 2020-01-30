@@ -1,6 +1,6 @@
 import os
 
-import mock
+from unittest import mock
 import pytest
 from gradient_boosting_model.processing.data_management import load_dataset
 from sqlalchemy_utils import create_database, database_exists
@@ -10,7 +10,7 @@ from api.config import TestingConfig
 from api.persistence import core
 
 
-@pytest.fixture
+@pytest.fixture(scope='session')
 def _db():
     db_url = TestingConfig.SQLALCHEMY_DATABASE_URI
     if not database_exists(db_url):
@@ -25,7 +25,7 @@ def _db():
     yield engine
 
 
-@pytest.fixture
+@pytest.fixture(scope='session')
 def _db_session(_db):
     """ Create DB session for testing.
     """
@@ -33,7 +33,7 @@ def _db_session(_db):
     yield session
 
 
-@pytest.fixture
+@pytest.fixture(scope='session')
 def app(_db_session):
     app = create_app(config_object=TestingConfig(), db_session=_db_session).app
     with app.app_context():

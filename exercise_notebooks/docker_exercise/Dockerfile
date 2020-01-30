@@ -10,6 +10,9 @@ ENV FLASK_RUN_HOST 0.0.0.0
 RUN apk add --no-cache gcc musl-dev linux-headers
 
 # copy local requirements.txt into container
+# doing this separately from the main copy
+# operation makes more efficient use of docker
+# layer caching.
 COPY requirements.txt requirements.txt
 
 # install requirements inside the container

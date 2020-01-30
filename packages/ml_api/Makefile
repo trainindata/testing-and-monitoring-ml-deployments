@@ -11,13 +11,13 @@ PASSWORD=UPDATEME
 tag-push-local:
 	@echo "+ $@"
 	docker login --username $(REPO) --password $(PASSWORD)
-	env TARGET=$(VERSION) docker-compose -f docker/docker-compose-ci-candidate.yml build --build-arg PIP_EXTRA_INDEX_URL=${PIP_EXTRA_INDEX_URL}
+	env TARGET=$(VERSION) docker-compose -f docker/docker-compose-ci-candidate.yml build
 	docker push $(REPO)/$(NAME):$(VERSION)
 
 tag-push-master:
 	@echo "+ $@"
 	docker login --username $(REPO) --password $(PASSWORD)
-	env TARGET=master docker-compose -f docker/docker-compose-ci-master.yml build --build-arg PIP_EXTRA_INDEX_URL=${PIP_EXTRA_INDEX_URL}
+	env TARGET=master docker-compose -f docker/docker-compose-ci-master.yml build
 	docker push $(REPO)/$(NAME):master
 
 # start up Flask API service

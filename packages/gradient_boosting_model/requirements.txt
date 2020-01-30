@@ -3,7 +3,7 @@ numpy>=1.18.1,<1.19.0
 scikit-learn>=0.22.1,<0.23.0
 pandas>=0.25.3,<0.26.0
 feature_engine>=0.3.1,<0.4.0
-joblib>=0.14.0,<0.15.0
+joblib>=0.14.1,<0.15.0
 
 # config parsing
 strictyaml>=1.0.5,<1.1.0

@@ -5,8 +5,6 @@ services:
     build:
       context: ../
       dockerfile: docker/Dockerfile.test
-      args:
-        - PIP_EXTRA_INDEX_URL
     environment:
       DB_HOST: test_database
       DB_PORT: 5432

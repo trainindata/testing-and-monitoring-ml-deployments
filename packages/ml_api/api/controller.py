@@ -3,13 +3,14 @@ import logging
 import threading
 
 from flask import request, jsonify, Response, current_app
-from gradient_boosting_model.predict import make_prediction as make_secondary_prediction
+
 from gradient_boosting_model import __version__ as shadow_version
 from regression_model import __version__ as live_version
 from prometheus_client import Histogram, Gauge, Info
-
+from gradient_boosting_model.predict import make_prediction
 from api.persistence.data_access import PredictionPersistence, ModelType
 from api.config import APP_NAME
+
 
 _logger = logging.getLogger(__name__)
 
@@ -99,13 +100,13 @@ def predict():
         )
 
 
-def predict_secondary():
+def predict_previous():
     if request.method == "POST":
         # Step 1: Extract POST data from request body as JSON
         json_data = request.get_json()
 
         # Step 2: Access the model prediction function (also validates data)
-        result = make_secondary_prediction(input_data=json_data)
+        result = make_prediction(input_data=json_data)
 
         # Step 3: Handle errors
         errors = result.get("errors")
