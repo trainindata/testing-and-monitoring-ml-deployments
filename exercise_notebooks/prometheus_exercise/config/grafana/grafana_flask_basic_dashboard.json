@@ -146,12 +146,7 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "sum (rate(http_request_latency_seconds_sum{job=\"webapp\"}[5m])) / sum (rate(http_request_latency_seconds_count{job=\"webapp\"}[5m]))",
-          "legendFormat": "Average (seconds)",
-          "refId": "A"
-        },
-        {
-          "expr": "rate(http_request_latency_seconds_sum{job=\"webapp\"}[5m]) / rate(http_request_latency_seconds_count{job=\"webapp\"}[5m])",
+          "expr": "rate(http_request_latency_seconds_sum{job=\"webapp\"}[1m]) / rate(http_request_latency_seconds_count{job=\"webapp\"}[1m])",
           "legendFormat": "{{endpoint}} (seconds)",
           "refId": "B"
         }
@@ -225,5 +220,5 @@
   "timezone": "",
   "title": "Really Simple Flask Dashboard",
   "uid": "q8vgEpLZk",
-  "version": 6
+  "version": 4
 }

@@ -20,7 +20,7 @@ def load_dataset(*, file_name: str) -> pd.DataFrame:
     return transformed
 
 
-def save_pipeline(*, pipeline_to_persist) -> None:
+def save_pipeline(*, pipeline_to_persist: Pipeline) -> None:
     """Persist the pipeline.
 
     Saves the versioned model, and overwrites any previous

@@ -9,6 +9,7 @@ from api.persistence.models import (
     GradientBoostingModelPredictions,
     LassoModelPredictions,
 )
+from gradient_boosting_model.processing.data_management import load_dataset
 
 
 @pytest.mark.integration
@@ -26,13 +27,13 @@ def test_health_endpoint(client):
     "api_endpoint, expected_no_predictions",
     (
         (
-            "v1/predictions/primary",
+            "v1/predictions/regression",
             # test csv contains 1459 rows
             # we expect 2 rows to be filtered
             1451,
         ),
         (
-            "v1/predictions/secondary",
+            "v1/predictions/gradient",
             # we expect 8 rows to be filtered
             1457,
         ),
@@ -42,7 +43,9 @@ def test_prediction_endpoint(
     api_endpoint, expected_no_predictions, client, test_inputs_df
 ):
     # Given
-    if api_endpoint == "v1/predictions/secondary":
+    # Load the test dataset which is included in the model package
+    test_inputs_df = load_dataset(file_name="test.csv")  # dataframe
+    if api_endpoint == "v1/predictions/regression":
         # adjust column names to those expected by the secondary model
         test_inputs_df.rename(columns=SECONDARY_VARIABLES_TO_RENAME, inplace=True)
 
@@ -95,7 +98,7 @@ def test_prediction_validation(
 
     # When
     response = client.post(
-        "/v1/predictions/secondary", json=test_inputs_df.to_dict(orient="records")
+        "/v1/predictions/gradient", json=test_inputs_df.to_dict(orient="records")
     )
 
     # Then
@@ -114,7 +117,7 @@ def test_prediction_data_saved(client, app, test_inputs_df):
 
     # When
     response = client.post(
-        "/v1/predictions/primary", json=test_inputs_df.to_dict(orient="records")
+        "/v1/predictions/regression", json=test_inputs_df.to_dict(orient="records")
     )
 
     # Then

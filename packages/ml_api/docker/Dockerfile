@@ -1,6 +1,5 @@
 FROM python:3.7.5-slim-buster
 
-ARG PIP_EXTRA_INDEX_URL
 RUN mkdir -p /opt/app
 COPY requirements /opt/app/requirements
 RUN pip install --upgrade pip

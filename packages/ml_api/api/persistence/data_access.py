@@ -5,8 +5,8 @@ import typing as t
 
 import numpy as np
 import pandas as pd
-from gradient_boosting_model.predict import make_prediction
-from regression_model.predict import make_prediction as make_shadow_prediction
+from gradient_boosting_model.predict import make_prediction as make_shadow_prediction
+from regression_model.predict import make_prediction as make_live_prediction
 from sqlalchemy.orm.session import Session
 
 from api.persistence.models import (
@@ -35,8 +35,8 @@ class PredictionResult(t.NamedTuple):
 
 
 MODEL_PREDICTION_MAP = {
-    ModelType.GRADIENT_BOOSTING: make_prediction,
-    ModelType.LASSO: make_shadow_prediction,
+    ModelType.GRADIENT_BOOSTING: make_shadow_prediction,
+    ModelType.LASSO: make_live_prediction,
 }
 
 
@@ -56,8 +56,8 @@ class PredictionPersistence:
         if db_model == ModelType.LASSO:
             # we have to rename a few of the columns for backwards
             # compatibility with the regression model package.
-            secondary_frame = pd.DataFrame(input_data)
-            input_data = secondary_frame.rename(
+            live_frame = pd.DataFrame(input_data)
+            input_data = live_frame.rename(
                 columns=SECONDARY_VARIABLES_TO_RENAME
             ).to_dict(orient="records")
 

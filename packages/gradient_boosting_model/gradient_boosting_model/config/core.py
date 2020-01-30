@@ -1,4 +1,4 @@
-import pathlib
+from pathlib import Path
 import typing as t
 
 from pydantic import BaseModel, validator
@@ -7,8 +7,8 @@ from strictyaml import load, YAML
 import gradient_boosting_model
 
 # Project Directories
-ROOT = pathlib.Path(gradient_boosting_model.__file__).resolve().parent.parent
-PACKAGE_ROOT = pathlib.Path(gradient_boosting_model.__file__).resolve().parent
+PACKAGE_ROOT = Path(gradient_boosting_model.__file__).resolve().parent
+ROOT = PACKAGE_ROOT.parent
 CONFIG_FILE_PATH = PACKAGE_ROOT / "config.yml"
 TRAINED_MODEL_DIR = PACKAGE_ROOT / "trained_models"
 DATASET_DIR = PACKAGE_ROOT / "datasets"
@@ -81,14 +81,14 @@ class Config(BaseModel):
     model_config: ModelConfig
 
 
-def find_config_file() -> pathlib.Path:
+def find_config_file() -> Path:
     """Locate the configuration file."""
     if CONFIG_FILE_PATH.is_file():
         return CONFIG_FILE_PATH
     raise Exception(f"Config not found at {CONFIG_FILE_PATH!r}")
 
 
-def fetch_config_from_yaml(cfg_path: pathlib.Path = None) -> YAML:
+def fetch_config_from_yaml(cfg_path: Path = None) -> YAML:
     """Parse YAML containing the package configuration."""
 
     if not cfg_path:
@@ -96,20 +96,20 @@ def fetch_config_from_yaml(cfg_path: pathlib.Path = None) -> YAML:
 
     if cfg_path:
         with open(cfg_path, "r") as conf_file:
-            cfg_dict = load(conf_file.read())
-            return cfg_dict
+            parsed_config = load(conf_file.read())
+            return parsed_config
     raise OSError(f"Did not find config file at path: {cfg_path}")
 
 
-def create_and_validate_config(config_dict: YAML = None) -> Config:
+def create_and_validate_config(parsed_config: YAML = None) -> Config:
     """Run validation on config values."""
-    if config_dict is None:
-        config_dict = fetch_config_from_yaml()
+    if parsed_config is None:
+        parsed_config = fetch_config_from_yaml()
 
     # specify the data attribute from the strictyaml YAML type.
     _config = Config(
-        app_config=AppConfig(**config_dict.data),
-        model_config=ModelConfig(**config_dict.data),
+        app_config=AppConfig(**parsed_config.data),
+        model_config=ModelConfig(**parsed_config.data),
     )
 
     return _config

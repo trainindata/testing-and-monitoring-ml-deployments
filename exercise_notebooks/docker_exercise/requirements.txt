@@ -1,2 +1,2 @@
-flask
-redis
+flask>=1.1.1,<1.2.0
+redis>=3.3.11,<3.4

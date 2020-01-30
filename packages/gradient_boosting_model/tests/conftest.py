@@ -5,7 +5,7 @@ from gradient_boosting_model.config.core import config
 from gradient_boosting_model.processing.data_management import load_dataset
 
 
-@pytest.fixture(scope="module")
+@pytest.fixture(scope="session")
 def pipeline_inputs():
     # For larger datasets, here we would use a testing sub-sample.
     data = load_dataset(file_name=config.app_config.training_data_file)
@@ -29,6 +29,6 @@ def raw_training_data():
     return load_dataset(file_name=config.app_config.training_data_file)
 
 
-@pytest.fixture(scope="function")
+@pytest.fixture()
 def sample_input_data():
     return load_dataset(file_name=config.app_config.test_data_file)
