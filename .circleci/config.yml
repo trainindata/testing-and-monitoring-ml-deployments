@@ -4,7 +4,7 @@ jobs:
   test_32_bit_architecture: # name of your job
     machine: # executor type
       enabled: true
-      image: i386/ubuntu  # 32-bit
+      image: ubuntu:18.04  # 32-bit
     working_directory: ~/project/packages/ml_api
     steps:
       - checkout:
