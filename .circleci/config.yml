@@ -17,7 +17,7 @@ jobs:
             sudo apt-get update -y
             sudo apt-get install -y expect
             sudo wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86.sh
-            chmod +x miniconda/Miniconda3-latest-Linux-x86.sh
+            chmod +x Miniconda3-latest-Linux-x86.sh
             ./scripts/miniconda.exp
             conda install tox
             tox -e py37
