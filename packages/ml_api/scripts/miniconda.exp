@@ -43,9 +43,9 @@ if {$force_conservative} {
 
 
 set timeout -1
-spawn ./Miniconda3-latest-MacOSX-x86_64.sh
+spawn ./Miniconda3-latest-Linux-x86.sh
 match_max 100000
-expect -exact "\r
+expect "\r
 Welcome to Miniconda3 4.7.12\r
 \r
 In order to continue the installation process, please review the license\r
