@@ -1,0 +1,16 @@
+#!/usr/bin/expect
+
+set timeout -1
+
+spawn ../Miniconda3-latest-Linux-x86.sh
+
+expect "Are sure you want to continue the installation? [yes|no]"
+send -- "Yes\r"
+
+expect "Can I ask you some questions?\r"
+send -- "\r"
+
+expect "Can I ask you some questions?\r"
+send -- "Yes\r"
+
+expect eof
