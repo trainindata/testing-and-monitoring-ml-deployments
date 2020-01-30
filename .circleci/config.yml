@@ -15,11 +15,9 @@ jobs:
             wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | sudo apt-key add -
             sudo add-apt-repository ppa:deadsnakes/ppa
             sudo apt-get update -y
-            sudo apt-get install -y expect
-            sudo wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86.sh
-            sudo chmod +x Miniconda3-latest-Linux-x86.sh
-            ./scripts/miniconda.exp
-            conda install tox
+            sudo apt-get install python3.6:i386
+            pip3 install --upgrade pip
+            pip3 install tox
             tox -e py37
   test_gradient_model_py36:
     docker:
