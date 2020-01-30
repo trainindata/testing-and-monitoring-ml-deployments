@@ -7,7 +7,7 @@ spawn ./Miniconda3-latest-Linux-x86.sh
 expect "Are sure you want to continue the installation?"
 send -- "Yes\r"
 
-expect "Can I ask you some questions?\r"
+expect "Please, press ENTER to continue\r"
 send -- "\r"
 
 expect "Can I ask you some questions?\r"
