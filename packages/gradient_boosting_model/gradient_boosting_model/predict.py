@@ -2,6 +2,7 @@ import logging
 import typing as t
 
 import pandas as pd
+import numpy as np
 
 from gradient_boosting_model import __version__ as _version
 from gradient_boosting_model.config.core import config
@@ -11,7 +12,7 @@ from gradient_boosting_model.processing.validation import validate_inputs
 _logger = logging.getLogger(__name__)
 
 pipeline_file_name = f"{config.app_config.pipeline_save_file}{_version}.pkl"
-_price_pipe = load_pipeline(file_name=pipeline_file_name)
+_price_session = load_pipeline(file_name=pipeline_file_name)
 
 
 def make_prediction(*, input_data: t.Union[pd.DataFrame, dict],) -> dict:
@@ -22,9 +23,11 @@ def make_prediction(*, input_data: t.Union[pd.DataFrame, dict],) -> dict:
     results = {"predictions": None, "version": _version, "errors": errors}
 
     if not errors:
-        predictions = _price_pipe.predict(
-            X=validated_data[config.model_config.features]
-        )
+
+        # The dict keys passed to run need to match what we pass to
+        # convert_sklearn
+        _price_session.run(None, {
+            "input": validated_data[config.model_config.features].astype(np.float32)})[0]
         _logger.info(
             f"Making predictions with model version: {_version} "
             f"Predictions: {predictions}"
