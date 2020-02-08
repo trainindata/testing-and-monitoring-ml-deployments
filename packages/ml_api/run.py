@@ -1,5 +1,5 @@
 import prometheus_client
-werkzeug.middleware.dispatcher import DispatcherMiddleware
+from werkzeug.middleware.dispatcher import DispatcherMiddleware
 
 from api.app import create_app
 from api.config import DevelopmentConfig, setup_app_logging
@@ -13,7 +13,6 @@ application = DispatcherMiddleware(
         app=main_app.wsgi_app,
         mounts={'/metrics': prometheus_client.make_wsgi_app()}
     )
-
 
 
 if __name__ == "__main__":
