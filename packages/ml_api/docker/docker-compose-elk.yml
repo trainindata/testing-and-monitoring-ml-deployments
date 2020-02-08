@@ -1,12 +1,9 @@
 version: '3.2'
 services:
   ml_api:
-    image: christophergs/ml_api:master
     build:
       context: ../
       dockerfile: docker/Dockerfile
-      args:
-        - PIP_EXTRA_INDEX_URL
     environment:
       DB_HOST: database
       DB_PORT: 5432
