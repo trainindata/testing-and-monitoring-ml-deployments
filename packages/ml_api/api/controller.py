@@ -2,18 +2,17 @@ import json
 import logging
 import threading
 
+from api.config import APP_NAME
+from api.persistence.data_access import PredictionPersistence, ModelType
 from flask import request, jsonify, Response, current_app
+from prometheus_client import Histogram, Gauge, Info
+from regression_model import __version__ as live_version
 
 from gradient_boosting_model import __version__ as shadow_version
-from regression_model import __version__ as live_version
-from prometheus_client import Histogram, Gauge, Info
 from gradient_boosting_model.predict import make_prediction
-from api.persistence.data_access import PredictionPersistence, ModelType
-from api.config import APP_NAME
 
+_logger = logging.getLogger('mlapi')
 
-gunicorn_error_logger = logging.getLogger('gunicorn.error')
-gunicorn_error_logger.setLevel(logging.DEBUG)
 
 PREDICTION_TRACKER = Histogram(
     name='house_price_prediction_dollars',
@@ -47,7 +46,7 @@ MODEL_VERSIONS.info({
 def health():
     if request.method == "GET":
         status = {"status": "ok"}
-        gunicorn_error_logger.debug(status)
+        _logger.debug(status)
         return jsonify(status)
 
 
@@ -55,7 +54,7 @@ def predict():
     if request.method == "POST":
         # Step 1: Extract POST data from request body as JSON
         json_data = request.get_json()
-        gunicorn_error_logger.info(
+        _logger.info(
             f'Inputs for model: {ModelType.LASSO.name} '
             f'Input values: {json_data}')
 
@@ -67,7 +66,7 @@ def predict():
 
         # Step 2b: Get and save shadow predictions asynchronously
         if current_app.config.get("SHADOW_MODE_ACTIVE"):
-            gunicorn_error_logger.debug(
+            _logger.debug(
                 f"Calling shadow model asynchronously: "
                 f"{ModelType.GRADIENT_BOOSTING.value}"
             )
@@ -82,7 +81,7 @@ def predict():
 
         # Step 3: Handle errors
         if result.errors:
-            gunicorn_error_logger.warning(f"errors during prediction: {result.errors}")
+            _logger.warning(f"errors during prediction: {result.errors}")
             return Response(json.dumps(result.errors), status=400)
 
         # Step 4: Monitoring
@@ -95,7 +94,7 @@ def predict():
                 app_name=APP_NAME,
                 model_name=ModelType.LASSO.name,
                 model_version=live_version).set(_prediction)
-        gunicorn_error_logger.info(
+        _logger.info(
             f'Prediction results for model: {ModelType.LASSO.name} '
             f'version: {result.model_version} '
             f'Output values: {result.predictions}')
