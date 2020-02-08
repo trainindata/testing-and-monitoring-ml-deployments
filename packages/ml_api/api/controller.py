@@ -3,16 +3,16 @@ import logging
 import threading
 
 from flask import request, jsonify, Response, current_app
-
-from gradient_boosting_model import __version__ as shadow_version
-from regression_model import __version__ as live_version
 from prometheus_client import Histogram, Gauge, Info
-from gradient_boosting_model.predict import make_prediction
-from api.persistence.data_access import PredictionPersistence, ModelType
+from regression_model import __version__ as live_version
+
 from api.config import APP_NAME
+from api.persistence.data_access import PredictionPersistence, ModelType
+from gradient_boosting_model import __version__ as shadow_version
+from gradient_boosting_model.predict import make_prediction
 
+_logger = logging.getLogger('mlapi')
 
-_logger = logging.getLogger(__name__)
 
 PREDICTION_TRACKER = Histogram(
     name='house_price_prediction_dollars',
@@ -45,13 +45,18 @@ MODEL_VERSIONS.info({
 
 def health():
     if request.method == "GET":
-        return jsonify({"status": "ok"})
+        status = {"status": "ok"}
+        _logger.debug(status)
+        return jsonify(status)
 
 
 def predict():
     if request.method == "POST":
         # Step 1: Extract POST data from request body as JSON
         json_data = request.get_json()
+        _logger.info(
+            f'Inputs for model: {ModelType.LASSO.name} '
+            f'Input values: {json_data}')
 
         # Step 2a: Get and save live model predictions
         persistence = PredictionPersistence(db_session=current_app.db_session)
@@ -89,6 +94,10 @@ def predict():
                 app_name=APP_NAME,
                 model_name=ModelType.LASSO.name,
                 model_version=live_version).set(_prediction)
+        _logger.info(
+            f'Prediction results for model: {ModelType.LASSO.name} '
+            f'version: {result.model_version} '
+            f'Output values: {result.predictions}')
 
         # Step 5: Prepare prediction response
         return jsonify(
