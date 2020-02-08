@@ -1,0 +1,99 @@
+version: '3.2'
+services:
+  ml_api:
+    build:
+      context: ../
+      dockerfile: docker/Dockerfile
+    environment:
+      DB_HOST: database
+      DB_PORT: 5432
+      DB_USER: user
+      DB_PASSWORD: ${DB_PASSWORD:-password}
+      DB_NAME: ml_api_dev
+    networks:
+      - elk
+    depends_on:
+      - database
+      - logstash
+    ports:
+      - "5000:5000"   # expose webserver to localhost host:container
+    command: bash -c "make db-migrations && make run-service-wsgi"
+
+  database:
+    image: postgres:latest
+    environment:
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: ml_api_dev
+    ports:
+      # expose postgres container on different host port to default (host:container)
+      - "6609:5432"
+    volumes:
+      - my_dbdata:/var/lib/postgresql/data
+    networks:
+      - elk
+
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:${ELK_VERSION}
+    volumes:
+      - type: bind
+        source: ./elasticsearch/config/elasticsearch.yml
+        target: /usr/share/elasticsearch/config/elasticsearch.yml
+        read_only: true
+      - type: volume
+        source: elasticsearch
+        target: /usr/share/elasticsearch/data
+    ports:
+      - "9200:9200"
+      - "9300:9300"
+    environment:
+      ES_JAVA_OPTS: "-Xmx256m -Xms256m"
+      ELASTIC_PASSWORD: changeme
+      # Use single node discovery in order to disable production mode and avoid bootstrap checks
+      # see https://www.elastic.co/guide/en/elasticsearch/reference/current/bootstrap-checks.html
+      discovery.type: single-node
+    networks:
+      - elk
+
+  logstash:
+    image: docker.elastic.co/logstash/logstash:${ELK_VERSION}
+    volumes:
+      - type: bind
+        source: ./logstash/config/logstash.yml
+        target: /usr/share/logstash/config/logstash.yml
+        read_only: true
+      - type: bind
+        source: ./logstash/pipeline
+        target: /usr/share/logstash/pipeline
+        read_only: true
+    ports:
+      - "5001:5001"
+      - "9600:9600"
+    environment:
+      LS_JAVA_OPTS: "-Xmx256m -Xms256m"
+    networks:
+      - elk
+    depends_on:
+      - elasticsearch
+
+  kibana:
+    image: docker.elastic.co/kibana/kibana:${ELK_VERSION}
+    volumes:
+      - type: bind
+        source: ./kibana/config/kibana.yml
+        target: /usr/share/kibana/config/kibana.yml
+        read_only: true
+    ports:
+      - "5601:5601"
+    networks:
+      - elk
+    depends_on:
+      - elasticsearch
+
+networks:
+  elk:
+    driver: bridge
+
+volumes:
+  my_dbdata:
+  elasticsearch:
