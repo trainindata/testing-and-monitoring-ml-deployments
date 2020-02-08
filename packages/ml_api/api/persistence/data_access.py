@@ -1,5 +1,6 @@
 import enum
 import json
+import logging
 import typing as t
 
 import numpy as np
@@ -8,11 +9,13 @@ from api.persistence.models import (
     LassoModelPredictions,
     GradientBoostingModelPredictions,
 )
-from flask import current_app
 from regression_model.predict import make_prediction as make_live_prediction
 from sqlalchemy.orm.session import Session
 
 from gradient_boosting_model.predict import make_prediction as make_shadow_prediction
+
+_logger = logging.getLogger('mlapi')
+
 
 SECONDARY_VARIABLES_TO_RENAME = {
     "FirstFlrSF": "1stFlrSF",
@@ -107,4 +110,4 @@ class PredictionPersistence:
 
         self.db_session.add(prediction_data)
         self.db_session.commit()
-        current_app.logger.debug(f"saved data for model: {db_model}")
+        _logger.debug(f"saved data for model: {db_model}")
