@@ -6,7 +6,7 @@ services:
   # '.env' file in this folder. It can be overridden with any normal
   # technique for setting environment variables, for example:
   #
-  #  ELK_VERSION=6.0.0-beta1 docker-compose up
+  #  ELK_VERSION=7.0.0-beta1 docker-compose up
   #
   # REF: https://docs.docker.com/compose/compose-file/#variable-substitution
   webapp:
