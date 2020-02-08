@@ -27,7 +27,13 @@ run-service-development:
 
 run-service-wsgi:
 	@echo "+ $@"
-	gunicorn --workers=1 --bind 0.0.0.0:5000 run:application
+	gunicorn --bind 0.0.0.0:5000 \
+			 --workers=1 \
+			 --log-config gunicorn_logging.conf \
+             --log-level=DEBUG \
+             --access-logfile=- \
+             --error-logfile=- \
+             run:application
 
 db-migrations:
 	@echo "+ $@"
