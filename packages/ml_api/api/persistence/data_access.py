@@ -5,13 +5,13 @@ import typing as t
 
 import numpy as np
 import pandas as pd
+from regression_model.predict import make_prediction as make_live_prediction
+from sqlalchemy.orm.session import Session
+
 from api.persistence.models import (
     LassoModelPredictions,
     GradientBoostingModelPredictions,
 )
-from regression_model.predict import make_prediction as make_live_prediction
-from sqlalchemy.orm.session import Session
-
 from gradient_boosting_model.predict import make_prediction as make_shadow_prediction
 
 _logger = logging.getLogger('mlapi')

@@ -2,12 +2,12 @@ import json
 import logging
 import threading
 
-from api.config import APP_NAME
-from api.persistence.data_access import PredictionPersistence, ModelType
 from flask import request, jsonify, Response, current_app
 from prometheus_client import Histogram, Gauge, Info
 from regression_model import __version__ as live_version
 
+from api.config import APP_NAME
+from api.persistence.data_access import PredictionPersistence, ModelType
 from gradient_boosting_model import __version__ as shadow_version
 from gradient_boosting_model.predict import make_prediction
 

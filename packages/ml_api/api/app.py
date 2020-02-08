@@ -1,10 +1,11 @@
 import logging
 
 import connexion
+from sqlalchemy.orm import scoped_session
+
 from api.config import Config
 from api.monitoring.middleware import setup_metrics
 from api.persistence.core import init_database
-from sqlalchemy.orm import scoped_session
 
 _logger = logging.getLogger('mlapi')
 

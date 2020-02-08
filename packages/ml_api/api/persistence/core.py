@@ -2,13 +2,14 @@ import logging
 import os
 
 import alembic.config
-from api.config import Config, ROOT
 from flask import Flask
 from sqlalchemy import create_engine
 from sqlalchemy.engine import Engine
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import scoped_session, sessionmaker
 from sqlalchemy_utils import database_exists, create_database
+
+from api.config import Config, ROOT
 
 _logger = logging.getLogger('mlapi')
 
