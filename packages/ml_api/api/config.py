@@ -3,8 +3,6 @@ import os
 import pathlib
 import sys
 
-from flask import Flask
-
 import api
 
 
@@ -22,22 +20,21 @@ APP_NAME = 'ml_api'
 class Config:
     DEBUG = False
     TESTING = False
-    ENV = os.environ.get("FLASK_ENV", "production")
-    SERVER_PORT = os.environ.get("SERVER_PORT", 5000)
-    SERVER_HOST = os.environ.get("SERVER_HOST", "0.0.0.0")
-    LOGGING_LEVEL = os.environ.get("LOGGING_LEVEL", logging.INFO)
-    SHADOW_MODE_ACTIVE = True
-
-    # DB config matches docker container
-    DB_USER = os.environ.get("DB_USER", "user")
-    DB_PASSWORD = os.environ.get("DB_PASSWORD", "password")
-    DB_PORT = os.environ.get("DB_PORT", 6609)
-    DB_HOST = os.environ.get("DB_HOST", "0.0.0.0")
-    DB_NAME = os.environ.get("DB_NAME", "ml_api_dev")
+    ENV = os.getenv("FLASK_ENV", "production")
+    SERVER_PORT = int(os.getenv("SERVER_PORT", 5000))
+    SERVER_HOST = os.getenv("SERVER_HOST", "0.0.0.0")
+    LOGGING_LEVEL = os.getenv("LOGGING_LEVEL", logging.INFO)
+    SHADOW_MODE_ACTIVE = os.getenv('SHADOW_MODE_ACTIVE', True)
     SQLALCHEMY_DATABASE_URI = (
-        f"postgresql+psycopg2://{DB_USER}:"
-        f"{DB_PASSWORD}@{DB_HOST}:{DB_PORT}/{DB_NAME}"
+        f"postgresql+psycopg2://{os.getenv('DB_USER')}:"
+        f"{os.getenv('DB_PASSWORD')}@{os.getenv('DB_HOST')}/{os.getenv('DB_NAME')}"
     )
+    # DB config matches docker container
+    DB_USER = os.getenv("DB_USER", "user")
+    DB_PASSWORD = os.getenv("DB_PASSWORD", "password")
+    DB_PORT = os.getenv("DB_PORT", 6609)
+    DB_HOST = os.getenv("DB_HOST", "0.0.0.0")
+    DB_NAME = os.getenv("DB_NAME", "ml_api_dev")
 
 
 class DevelopmentConfig(Config):
@@ -52,10 +49,10 @@ class TestingConfig(Config):
     LOGGING_LEVEL = logging.DEBUG
 
     # DB config matches test docker container
-    DB_USER = os.environ.get("DB_USER", "test_user")
-    DB_PASSWORD = os.environ.get("DB_PASSWORD", "password")
-    DB_PORT = os.environ.get("DB_PORT", 6608)
-    DB_HOST = os.environ.get("DB_HOST", "0.0.0.0")
+    DB_USER = os.getenv("DB_USER", "test_user")
+    DB_PASSWORD = os.getenv("DB_PASSWORD", "password")
+    DB_PORT = os.getenv("DB_PORT", 6608)
+    DB_HOST = os.getenv("DB_HOST", "0.0.0.0")
     DB_NAME = "ml_api_test"
     SQLALCHEMY_DATABASE_URI = (
         f"postgresql+psycopg2://{DB_USER}:"
@@ -64,11 +61,11 @@ class TestingConfig(Config):
 
 
 class ProductionConfig(Config):
-    DB_USER = os.environ.get("DB_USER", "user")
-    DB_PASSWORD = os.environ.get("DB_PASSWORD", "password")
-    DB_PORT = os.environ.get("DB_PORT", 6609)
-    DB_HOST = os.environ.get("DB_HOST", "database")
-    DB_NAME = os.environ.get("DB_NAME", "ml_api")
+    DB_USER = os.getenv("DB_USER", "user")
+    DB_PASSWORD = os.getenv("DB_PASSWORD", "password")
+    DB_PORT = os.getenv("DB_PORT", 6609)
+    DB_HOST = os.getenv("DB_HOST", "database")
+    DB_NAME = os.getenv("DB_NAME", "ml_api")
     SQLALCHEMY_DATABASE_URI = (
         f"postgresql+psycopg2://{DB_USER}:"
         f"{DB_PASSWORD}@{DB_HOST}:{DB_PORT}/{DB_NAME}"
@@ -82,12 +79,13 @@ def get_console_handler():
     return console_handler
 
 
-def setup_app_logging(config: Config, app: Flask) -> None:
+def setup_app_logging(config: Config) -> None:
     """Prepare custom logging for our application."""
-    gunicorn_error_logger = logging.getLogger('gunicorn.error')
-    app.logger.handlers.extend(gunicorn_error_logger.handlers)
-    app.logger.setLevel(config.LOGGING_LEVEL)
     _disable_irrelevant_loggers()
+    root = logging.getLogger()
+    root.setLevel(config.LOGGING_LEVEL)
+    root.addHandler(get_console_handler())
+    root.propagate = False
 
 
 def _disable_irrelevant_loggers() -> None:

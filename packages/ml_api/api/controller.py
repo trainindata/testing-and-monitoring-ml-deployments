@@ -3,14 +3,16 @@ import logging
 import threading
 
 from flask import request, jsonify, Response, current_app
-from gradient_boosting_model.predict import make_prediction as make_secondary_prediction
+
 from gradient_boosting_model import __version__ as shadow_version
 from regression_model import __version__ as live_version
 from prometheus_client import Histogram, Gauge, Info
-
+from gradient_boosting_model.predict import make_prediction
 from api.persistence.data_access import PredictionPersistence, ModelType
 from api.config import APP_NAME
 
+
+_logger = logging.getLogger(__name__)
 
 PREDICTION_TRACKER = Histogram(
     name='house_price_prediction_dollars',
@@ -43,7 +45,6 @@ MODEL_VERSIONS.info({
 
 def health():
     if request.method == "GET":
-        current_app.logger.info('health endpoint')
         return jsonify({"status": "ok"})
 
 
@@ -58,13 +59,12 @@ def predict():
             db_model=ModelType.LASSO, input_data=json_data
         )
 
-        current_app.logger.debug(f'PREDICTION: '
-                                 f'model version: {result.model_version} '
-                                 f'Inputs: {json_data} '
-                                 f'Predictions: {result.predictions}')
-
         # Step 2b: Get and save shadow predictions asynchronously
         if current_app.config.get("SHADOW_MODE_ACTIVE"):
+            _logger.debug(
+                f"Calling shadow model asynchronously: "
+                f"{ModelType.GRADIENT_BOOSTING.value}"
+            )
             thread = threading.Thread(
                 target=persistence.make_save_predictions,
                 kwargs={
@@ -76,6 +76,7 @@ def predict():
 
         # Step 3: Handle errors
         if result.errors:
+            _logger.warning(f"errors during prediction: {result.errors}")
             return Response(json.dumps(result.errors), status=400)
 
         # Step 4: Monitoring
@@ -99,13 +100,13 @@ def predict():
         )
 
 
-def predict_secondary():
+def predict_previous():
     if request.method == "POST":
         # Step 1: Extract POST data from request body as JSON
         json_data = request.get_json()
 
         # Step 2: Access the model prediction function (also validates data)
-        result = make_secondary_prediction(input_data=json_data)
+        result = make_prediction(input_data=json_data)
 
         # Step 3: Handle errors
         errors = result.get("errors")

@@ -1,5 +1,4 @@
 import logging
-import os
 
 from gradient_boosting_model.config.core import config, PACKAGE_ROOT
 
@@ -14,5 +13,5 @@ from gradient_boosting_model.config.core import config, PACKAGE_ROOT
 logging.getLogger(config.app_config.package_name).addHandler(logging.NullHandler())
 
 
-with open(os.path.join(PACKAGE_ROOT, "VERSION")) as version_file:
+with open(PACKAGE_ROOT / "VERSION") as version_file:
     __version__ = version_file.read().strip()

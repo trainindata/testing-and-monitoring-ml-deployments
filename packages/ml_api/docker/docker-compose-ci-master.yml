@@ -8,8 +8,6 @@ services:
     build:
       context: ../
       dockerfile: docker/Dockerfile.test
-      args:
-        - PIP_EXTRA_INDEX_URL
     ports:
       - "5000:5000"
     tty: true

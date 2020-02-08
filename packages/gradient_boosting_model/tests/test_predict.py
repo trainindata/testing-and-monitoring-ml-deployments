@@ -26,7 +26,6 @@ def test_prediction_quality_against_benchmark(raw_training_data, sample_input_da
 
     # Then
     assert subject is not None
-    assert isinstance(subject.get("predictions")[0], float)
     prediction = subject.get("predictions")[0]
     assert isinstance(prediction, float)
     assert prediction > benchmark_lower_boundary

@@ -1,19 +1,16 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-import io
-import os
+from pathlib import Path
 
 from setuptools import find_packages, setup
-from gradient_boosting_model.config.core import config, PACKAGE_ROOT
-
 
 # Package meta-data.
-NAME = config.app_config.package_name
-DESCRIPTION = "Train and deploy gradient boosting regression model."
-URL = "your github project"
-EMAIL = "your_email@email.com"
-AUTHOR = "Your name"
+NAME = 'tid-gradient-boosting-model'
+DESCRIPTION = "Gradient boosting regression model from Train In Data."
+URL = "https://github.com/trainindata/testing-and-monitoring-ml-deployments"
+EMAIL = "christopher.samiullah@protonmail.com"
+AUTHOR = "ChristopherGS"
 REQUIRES_PYTHON = ">=3.6.0"
 
 
@@ -28,21 +25,13 @@ def list_reqs(fname="requirements.txt"):
 # Except, perhaps the License and Trove Classifiers!
 # If you do change the License, remember to change the
 # Trove Classifier for that!
+long_description = DESCRIPTION
 
-here = os.path.abspath(os.path.dirname(__file__))
-
-# Import the README and use it as the long-description.
-# Note: this will only work if 'README.md' is present in your MANIFEST.in file!
-try:
-    with io.open(os.path.join(here, "README.md"), encoding="utf-8") as f:
-        long_description = "\n" + f.read()
-except FileNotFoundError:
-    long_description = DESCRIPTION
-
-
-# Load the package's __version__.py module as a dictionary.
+# Load the package's VERSION file as a dictionary.
 about = {}
-with open(PACKAGE_ROOT / "VERSION") as f:
+ROOT_DIR = Path(__file__).resolve().parent
+PACKAGE_DIR = ROOT_DIR / 'gradient_boosting_model'
+with open(PACKAGE_DIR / "VERSION") as f:
     _version = f.read().strip()
     about["__version__"] = _version
 
@@ -72,6 +61,7 @@ setup(
         "Programming Language :: Python :: 3",
         "Programming Language :: Python :: 3.6",
         "Programming Language :: Python :: 3.7",
+        "Programming Language :: Python :: 3.8",
         "Programming Language :: Python :: Implementation :: CPython",
         "Programming Language :: Python :: Implementation :: PyPy",
     ],
