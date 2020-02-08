@@ -5,7 +5,6 @@ import typing as t
 
 import numpy as np
 import pandas as pd
-from gradient_boosting_model.predict import make_prediction as make_shadow_prediction
 from regression_model.predict import make_prediction as make_live_prediction
 from sqlalchemy.orm.session import Session
 
@@ -13,14 +12,16 @@ from api.persistence.models import (
     LassoModelPredictions,
     GradientBoostingModelPredictions,
 )
+from gradient_boosting_model.predict import make_prediction as make_shadow_prediction
+
+_logger = logging.getLogger('mlapi')
+
 
 SECONDARY_VARIABLES_TO_RENAME = {
     "FirstFlrSF": "1stFlrSF",
     "SecondFlrSF": "2ndFlrSF",
     "ThreeSsnPortch": "3SsnPorch",
 }
-
-_logger = logging.getLogger(__name__)
 
 
 class ModelType(enum.Enum):
