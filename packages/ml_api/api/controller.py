@@ -54,8 +54,9 @@ def predict():
     if request.method == "POST":
         # Step 1: Extract POST data from request body as JSON
         json_data = request.get_json()
-        for input_entry in json_data:
-            _logger.info({"inputs": input_entry})
+        _logger.info(
+            f'Inputs for model: {ModelType.LASSO.name} '
+            f'Input values: {json_data}')
 
         # Step 2a: Get and save live model predictions
         persistence = PredictionPersistence(db_session=current_app.db_session)
