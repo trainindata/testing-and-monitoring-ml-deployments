@@ -2,7 +2,7 @@ import argparse
 import os
 import time
 import typing as t
-from random import randint
+from random import randint, choice
 
 import pandas as pd
 import requests
@@ -19,12 +19,19 @@ FIRST_FLR_SF_MAP = {"min": 407, "max": 5095}
 
 SECOND_FLR_SF_MAP = {"min": 0, "max": 1862}
 
+BSMT_QUAL_VALUES = ('Gd', 'TA', 'Ex', 'Fa')
+
 
 def _generate_random_int(value: int, value_ranges: t.Mapping) -> int:
     """Generate random integer within a min and max range."""
     random_value = randint(value_ranges["min"], value_ranges["max"])
-
     return int(random_value)
+
+
+def _select_random_category(value: str, value_options: t.Sequence) -> str:
+    """Select random category given a sequence of categories."""
+    random_category = choice(value_options)
+    return random_category
 
 
 def _prepare_inputs(dataframe: pd.DataFrame) -> pd.DataFrame:
@@ -41,6 +48,10 @@ def _prepare_inputs(dataframe: pd.DataFrame) -> pd.DataFrame:
     )
     clean_inputs_df.loc[:, "LotArea"] = clean_inputs_df["LotArea"].apply(
         _generate_random_int, value_ranges=LOT_AREA_MAP
+    )
+
+    clean_inputs_df.loc[:, "BsmtQual"] = clean_inputs_df["BsmtQual"].apply(
+        _select_random_category, value_options=BSMT_QUAL_VALUES
     )
 
     return clean_inputs_df
@@ -74,6 +85,7 @@ def populate_database(n_predictions: int = 500, anomaly: bool = False) -> None:
         clean_inputs_df.loc[:, "OverallQual"] = 1
         clean_inputs_df.loc[:, "GrLivArea"] = 1
 
+    clean_inputs_df = clean_inputs_df.where(pd.notnull(clean_inputs_df), None)
     for index, data in clean_inputs_df.iterrows():
         if index > n_predictions:
             if anomaly:
