@@ -1,0 +1,127 @@
+version: 2.1
+
+jobs:
+  test_gradient_model_py36:
+    docker:
+      - image: circleci/python:3.6.9
+    working_directory: ~/project/packages/gradient_boosting_model
+    steps:
+      - checkout:
+          path: ~/project
+      - run:
+          name: Run tests with Python 3.6
+          command: |
+            sudo pip install --upgrade pip
+            pip install --user tox
+            tox -e py36
+  test_gradient_model_py37:
+    docker:
+      - image: circleci/python:3.7.6
+    working_directory: ~/project/packages/gradient_boosting_model
+    steps:
+      - checkout:
+          path: ~/project
+      - run:
+          name: Run tests with Python 3.7
+          command: |
+            sudo pip install --upgrade pip
+            pip install --user tox
+            tox -e py37
+  test_gradient_model_py38:
+    docker:
+      - image: circleci/python:3.8.0
+    working_directory: ~/project/packages/gradient_boosting_model
+    steps:
+      - checkout:
+          path: ~/project
+      - run:
+          name: Run tests with Python 3.8
+          command: |
+            sudo pip install --upgrade pip
+            pip install --user tox
+            tox -e py38
+  test_ml_api_py36:
+    docker:
+      - image: circleci/python:3.6.9
+      - image: postgres
+        environment:
+          POSTGRES_USER: test_user
+          POSTGRES_PASSWORD: password
+          POSTGRES_DB: ml_api_test
+    environment:
+      DB_HOST: localhost
+      DB_PORT: 5432
+      DB_USER: test_user
+      DB_PASSWORD: password
+      DB_NAME: ml_api_test
+      SHADOW_MODE_ACTIVE: true
+    working_directory: ~/project/packages/ml_api
+    steps:
+      - checkout:
+          path: ~/project
+      - run:
+          name: Run API tests with Python 3.6
+          command: |
+            sudo pip install --upgrade pip
+            pip install --user tox
+            tox -e py36
+  test_ml_api_py37:
+    docker:
+      - image: circleci/python:3.7.6
+      - image: postgres
+        environment:
+          POSTGRES_USER: test_user
+          POSTGRES_PASSWORD: password
+          POSTGRES_DB: ml_api_test
+    environment:
+      DB_HOST: localhost
+      DB_PORT: 5432
+      DB_USER: test_user
+      DB_PASSWORD: password
+      DB_NAME: ml_api_test
+      SHADOW_MODE_ACTIVE: true
+    working_directory: ~/project/packages/ml_api
+    steps:
+      - checkout:
+          path: ~/project
+      - run:
+          name: Run API tests with Python 3.7
+          command: |
+            sudo pip install --upgrade pip
+            pip install --user tox
+            tox -e py37
+  test_ml_api_py38:
+    docker:
+      - image: circleci/python:3.8.1
+      - image: postgres
+        environment:
+          POSTGRES_USER: test_user
+          POSTGRES_PASSWORD: password
+          POSTGRES_DB: ml_api_test
+    environment:
+      DB_HOST: localhost
+      DB_PORT: 5432
+      DB_USER: test_user
+      DB_PASSWORD: password
+      DB_NAME: ml_api_test
+      SHADOW_MODE_ACTIVE: true
+    working_directory: ~/project/packages/ml_api
+    steps:
+      - checkout:
+          path: ~/project
+      - run:
+          name: Run API tests with Python 3.8
+          command: |
+            sudo pip install --upgrade pip
+            pip install --user tox
+            tox -e py38
+workflows:
+  version: 2
+  test-all:
+    jobs:
+      - test_gradient_model_py36
+      - test_gradient_model_py37
+      - test_gradient_model_py38
+      - test_ml_api_py36
+      - test_ml_api_py37
+      - test_ml_api_py38
