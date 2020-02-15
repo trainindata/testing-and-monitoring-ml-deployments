@@ -1,24 +1,6 @@
 version: 2.1
 
 jobs:
-  test_32_bit_architecture: # name of your job
-    machine: # executor type
-      enabled: true
-      image: ubuntu-1604:201903-01
-    working_directory: ~/project/packages/ml_api
-    steps:
-      - checkout:
-          path: ~/project
-      - run:
-          name: Run API tests with Python 3.7
-          command: |
-            wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | sudo apt-key add -
-            sudo add-apt-repository ppa:deadsnakes/ppa
-            sudo apt-get update -y
-            sudo apt-get install python3.6:i386
-            pip3 install --upgrade pip
-            pip3 install tox
-            tox -e py37
   test_gradient_model_py36:
     docker:
       - image: circleci/python:3.6.9
@@ -137,10 +119,9 @@ workflows:
   version: 2
   test-all:
     jobs:
-      - test_32_bit_architecture
-#      - test_gradient_model_py36
+      - test_gradient_model_py36
       - test_gradient_model_py37
-#      - test_gradient_model_py38
-#      - test_ml_api_py36
+      - test_gradient_model_py38
+      - test_ml_api_py36
       - test_ml_api_py37
-#      - test_ml_api_py38
+      - test_ml_api_py38
