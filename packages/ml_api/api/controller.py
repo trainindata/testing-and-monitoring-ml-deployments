@@ -53,7 +53,6 @@ def health():
 def predict():
     if request.method == "POST":
         # Step 1: Extract POST data from request body as JSON
-        _logger.info('INPUT START')
         json_data = request.get_json()
         for entry in json_data:
             _logger.info(entry)
