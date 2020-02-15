@@ -11,3 +11,6 @@ tid-regression-model>=2.0.20,<2.1.0
 black>=19.10b0,<20.0
 flake8>=3.7.9,<4.0
 mypy>=0.740
+
+# kaggle cli
+kaggle>=1.5.6,<1.6.0
