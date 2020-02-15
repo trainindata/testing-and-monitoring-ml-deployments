@@ -1,4 +1,46 @@
 {
+  "__inputs": [
+    {
+      "name": "DS_PROMETHEUS",
+      "label": "Prometheus",
+      "description": "",
+      "type": "datasource",
+      "pluginId": "prometheus",
+      "pluginName": "Prometheus"
+    }
+  ],
+  "__requires": [
+    {
+      "type": "panel",
+      "id": "gauge",
+      "name": "Gauge",
+      "version": ""
+    },
+    {
+      "type": "grafana",
+      "id": "grafana",
+      "name": "Grafana",
+      "version": "6.6.1"
+    },
+    {
+      "type": "panel",
+      "id": "graph",
+      "name": "Graph",
+      "version": ""
+    },
+    {
+      "type": "datasource",
+      "id": "prometheus",
+      "name": "Prometheus",
+      "version": "1.0.0"
+    },
+    {
+      "type": "panel",
+      "id": "table",
+      "name": "Table",
+      "version": ""
+    }
+  ],
   "annotations": {
     "list": [
       {
@@ -16,13 +58,13 @@
   "editable": true,
   "gnetId": null,
   "graphTooltip": 0,
-  "id": 7,
+  "id": null,
   "links": [],
   "panels": [
     {
       "cacheTimeout": null,
       "columns": [],
-      "datasource": "Prometheus",
+      "datasource": "${DS_PROMETHEUS}",
       "fontSize": "100%",
       "gridPos": {
         "h": 4,
@@ -43,12 +85,14 @@
       "styles": [
         {
           "alias": "Time",
+          "align": "auto",
           "dateFormat": "YYYY-MM-DD HH:mm:ss",
           "pattern": "Time",
           "type": "date"
         },
         {
           "alias": "",
+          "align": "auto",
           "colorMode": null,
           "colors": [
             "rgba(245, 54, 54, 0.9)",
@@ -82,7 +126,7 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "Prometheus",
+      "datasource": "${DS_PROMETHEUS}",
       "fill": 1,
       "fillGradient": 0,
       "gridPos": {
@@ -118,7 +162,7 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "sum (rate(house_price_prediction_dollars_sum{job=\"ml_api\"}[5m])) / sum (rate(house_price_prediction_dollars_count{job=\"ml_api\"}[5m]))",
+          "expr": "sum (rate(house_price_prediction_dollars_sum{job=\"ml_api\"}[1m])) / sum (rate(house_price_prediction_dollars_count{job=\"ml_api\"}[1m]))",
           "legendFormat": "Average Prediction Amount ($)",
           "refId": "A"
         }
@@ -169,7 +213,7 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "Prometheus",
+      "datasource": "${DS_PROMETHEUS}",
       "fill": 1,
       "fillGradient": 0,
       "gridPos": {
@@ -206,7 +250,7 @@
       "targets": [
         {
           "expr": "rate(house_price_prediction_dollars_count{job=\"ml_api\"}[1m])",
-          "legendFormat": "Average Prediction Amount ($)",
+          "legendFormat": "Average Prediction Rate",
           "refId": "A"
         }
       ],
@@ -256,7 +300,7 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "Prometheus",
+      "datasource": "${DS_PROMETHEUS}",
       "fill": 1,
       "fillGradient": 0,
       "gridPos": {
@@ -292,17 +336,17 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "avg_over_time(house_price_gauge_dollars[1h])",
+          "expr": "avg_over_time(house_price_gauge_dollars[1m])",
           "legendFormat": "AVG",
           "refId": "A"
         },
         {
-          "expr": "stddev_over_time(house_price_gauge_dollars[1h])",
+          "expr": "stddev_over_time(house_price_gauge_dollars[1m])",
           "legendFormat": "STD",
           "refId": "B"
         },
         {
-          "expr": "stddev_over_time(house_price_gauge_dollars[1h]) / (sqrt(count_over_time(house_price_prediction_dollars_count[1h])))",
+          "expr": "stddev_over_time(house_price_gauge_dollars[1m]) / (sqrt(count_over_time(house_price_prediction_dollars_count[1m])))",
           "legendFormat": "SEM",
           "refId": "C"
         }
@@ -353,7 +397,7 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "Prometheus",
+      "datasource": "${DS_PROMETHEUS}",
       "fill": 1,
       "fillGradient": 0,
       "gridPos": {
@@ -436,7 +480,7 @@
       }
     },
     {
-      "datasource": "Prometheus",
+      "datasource": "${DS_PROMETHEUS}",
       "gridPos": {
         "h": 4,
         "w": 12,
@@ -450,30 +494,36 @@
             "logmin"
           ],
           "defaults": {
+            "color": {
+              "mode": "thresholds"
+            },
             "decimals": 2,
             "mappings": [],
             "max": 100,
             "min": 0,
-            "thresholds": [
-              {
-                "color": "green",
-                "value": null
-              },
-              {
-                "color": "red",
-                "value": 80
-              }
-            ],
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "green",
+                  "value": null
+                },
+                {
+                  "color": "red",
+                  "value": 80
+                }
+              ]
+            },
             "unit": "currencyUSD"
           },
-          "override": {},
+          "overrides": [],
           "values": false
         },
         "orientation": "auto",
         "showThresholdLabels": false,
         "showThresholdMarkers": true
       },
-      "pluginVersion": "6.5.2",
+      "pluginVersion": "6.6.1",
       "targets": [
         {
           "expr": "house_price_gauge_dollars",
@@ -487,7 +537,7 @@
       "type": "gauge"
     },
     {
-      "datasource": "Prometheus",
+      "datasource": "${DS_PROMETHEUS}",
       "gridPos": {
         "h": 4,
         "w": 12,
@@ -501,30 +551,36 @@
             "max"
           ],
           "defaults": {
+            "color": {
+              "mode": "thresholds"
+            },
             "decimals": 2,
             "mappings": [],
             "max": 100,
             "min": 0,
-            "thresholds": [
-              {
-                "color": "green",
-                "value": null
-              },
-              {
-                "color": "red",
-                "value": 80
-              }
-            ],
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "green",
+                  "value": null
+                },
+                {
+                  "color": "red",
+                  "value": 80
+                }
+              ]
+            },
             "unit": "currencyUSD"
           },
-          "override": {},
+          "overrides": [],
           "values": false
         },
         "orientation": "auto",
         "showThresholdLabels": false,
         "showThresholdMarkers": true
       },
-      "pluginVersion": "6.5.2",
+      "pluginVersion": "6.6.1",
       "targets": [
         {
           "expr": "house_price_gauge_dollars",
@@ -538,14 +594,14 @@
       "type": "gauge"
     }
   ],
-  "schemaVersion": 21,
+  "schemaVersion": 22,
   "style": "dark",
   "tags": [],
   "templating": {
     "list": []
   },
   "time": {
-    "from": "now-1h",
+    "from": "now-30m",
     "to": "now"
   },
   "timepicker": {
@@ -565,5 +621,5 @@
   "timezone": "",
   "title": "ML API Dashboard",
   "uid": "q8vgEpLZk",
-  "version": 19
+  "version": 2
 }

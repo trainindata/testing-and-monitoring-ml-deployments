@@ -7,7 +7,7 @@ from api.config import Config
 from api.monitoring.middleware import setup_metrics
 from api.persistence.core import init_database
 
-_logger = logging.getLogger(__name__)
+_logger = logging.getLogger('mlapi')
 
 
 def create_app(
