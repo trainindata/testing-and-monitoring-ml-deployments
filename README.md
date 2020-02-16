@@ -1,2 +1,1 @@
-# testing-and-monitoring-ml-deployments
-WIP
+Example project for the course "Testing & Monitoring Machine Learning Model Deployments".
