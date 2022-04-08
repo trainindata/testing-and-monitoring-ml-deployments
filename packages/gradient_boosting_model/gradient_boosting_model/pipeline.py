@@ -2,7 +2,7 @@ from sklearn.impute import SimpleImputer
 from sklearn.preprocessing import OrdinalEncoder
 from sklearn.ensemble import GradientBoostingRegressor
 from sklearn.pipeline import Pipeline
-from feature_engine.categorical_encoders import RareLabelCategoricalEncoder
+from feature_engine.encoding import RareLabelCategoricalEncoder
 
 from gradient_boosting_model.processing import preprocessors as pp
 from gradient_boosting_model.config.core import config
