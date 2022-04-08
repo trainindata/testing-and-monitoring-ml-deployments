@@ -5,7 +5,7 @@ pytest>=6.2.3,<6.3.0
 
 # old model for testing purposes
 # source code: https://github.com/trainindata/deploying-machine-learning-models/tree/master/packages/regression_model
-tid-regression-model==3.1.1
+tid-regression-model==3.1.2
 
 # repo maintenance tooling
 black>=19.10b0,<20.0
