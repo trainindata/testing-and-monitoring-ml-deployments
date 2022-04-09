@@ -1,12 +1,13 @@
 # ML Model
-tid-gradient-boosting-model>=0.1.18,<0.2.0
+tid-gradient-boosting-model>=0.3.0,<0.4.0
 
 # Old model
-tid-regression-model>=2.0.20,<2.1.0
+tid-regression-model==3.1.2
 
 # Web microframework for the API
 flask>=1.1.1,<1.2.0
 connexion[swagger-ui]>=2.5.1,<2.6.0
+markupsafe==2.0.1  # https://github.com/aws/aws-sam-cli/issues/3661
 
 # repo maintenance tooling
 black>=19.10b0,<20.0

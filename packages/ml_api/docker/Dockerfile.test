@@ -1,4 +1,4 @@
-FROM python:3.7.5-slim-buster
+FROM python:3.9.5-slim-buster
 
 RUN mkdir -p /opt/app
 COPY requirements /opt/app/requirements
