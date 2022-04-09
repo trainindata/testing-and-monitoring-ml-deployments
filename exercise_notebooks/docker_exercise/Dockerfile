@@ -1,4 +1,4 @@
-FROM python:3.7-alpine
+FROM python:3.9-alpine
 WORKDIR /code
 
 # Set env vars required by Flask
