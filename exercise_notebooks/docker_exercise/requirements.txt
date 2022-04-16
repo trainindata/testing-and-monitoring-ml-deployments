@@ -1,2 +1,3 @@
 flask>=1.1.1,<1.2.0
+markupsafe==2.0.1 # https://github.com/aws/aws-sam-cli/issues/3661
 redis>=3.3.11,<3.4
